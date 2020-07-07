@@ -4,14 +4,19 @@ using System.Text;
 
 namespace QueryParserConsole.Query
 {
-    class SelectStatement : IStatement
+    public class SelectStatement : IStatement
     {
-        #region Constructors
-        #endregion
-
         #region Public Properties
+        public List<StatementPart> Statements { get; set; }
         #endregion
 
+        #region Constructors
+        public SelectStatement()
+        {
+            Statements = new List<StatementPart>();
+        }
+        #endregion
+            
         #region Public Methods
         #endregion
 

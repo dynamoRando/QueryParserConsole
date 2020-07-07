@@ -1,4 +1,5 @@
-﻿using QueryParserConsole.Query;
+﻿using Antlr4.Runtime.Misc;
+using QueryParserConsole.Query;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,10 @@ namespace QueryParserConsole
         #endregion
 
         #region Public Properties
+        public override void EnterSelect_statement([NotNull] TSqlParser.Select_statementContext context)
+        {
+            base.EnterSelect_statement(context);
+        }
         #endregion
 
         #region Public Methods
