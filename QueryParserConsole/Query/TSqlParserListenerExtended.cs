@@ -69,14 +69,15 @@ namespace QueryParserConsole
         public override void EnterPredicate([NotNull] TSqlParser.PredicateContext context)
         {
             base.EnterPredicate(context);
+            Console.WriteLine(context.GetText());
             var select = GetStatementAsSelect();
             var part = new StatementPart();
             part.Text = context.GetText();
-
+            
             var parent = context.Parent.Parent;
             if (parent != null)
             {
-                part.Text = parent.GetText();
+                part.StatementParent = parent.GetText();
             }
 
             var grandparent = context.Parent.Parent.Parent;
