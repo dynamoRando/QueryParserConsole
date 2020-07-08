@@ -7,13 +7,16 @@ namespace QueryParserConsole.Query
     public class StatementPart
     {
         public string Text { get; set; }
+        public string TextWithWhiteSpace { get; set; }
         // if the text can be broken down into elements
         public List<string> StatementElements { get; set; }
         // the function that the statement came from
         public string StatementOrigin { get; set; }
         // the text above the current statement
         public string StatementParent { get; set; }
+        public string StatementParentWithWhiteSpace { get; set; }
         public string StatementGrandParent { get; set; }
+        public string StatementGrandParentWithWhiteSpace { get; set; }
 
         public StatementPart()
         {

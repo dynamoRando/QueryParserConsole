@@ -33,6 +33,7 @@ namespace QueryParserConsole
             var parseTree = parser.dml_clause();
             ParseTreeWalker walker = new ParseTreeWalker();
             TSqlParserListenerExtended loader = new TSqlParserListenerExtended(new SelectStatement());
+            loader.TokenStream = tokens;
             walker.Walk(loader, parseTree);
             Console.WriteLine("Parse Tree:");
             Console.WriteLine(parseTree.ToStringTree(parser));

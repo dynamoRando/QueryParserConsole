@@ -1,7 +1,9 @@
-﻿using Antlr4.Runtime.Misc;
+﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using QueryParserConsole.Query;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Xml.XPath;
 
@@ -11,6 +13,7 @@ namespace QueryParserConsole
     {
         #region Private Fields
         IStatement _statement;
+        ICharStream _charStream;
         #endregion
 
         #region Constructors
@@ -26,6 +29,7 @@ namespace QueryParserConsole
         #endregion
 
         #region Public Properties
+        public CommonTokenStream TokenStream { get; set; }
         #endregion
 
         #region Public Methods
@@ -75,16 +79,27 @@ namespace QueryParserConsole
             part.Text = context.GetText();
             part.StatementOrigin = "EnterPredicate";
 
+            int a = context.Start.StartIndex;
+            int b = context.Stop.StopIndex;
+            Interval interval = new Interval(a, b);
+            _charStream = context.Start.InputStream;
+            
+            part.TextWithWhiteSpace = _charStream.GetText(interval);
+
             var parent = context.Parent.Parent;
             if (parent != null)
             {
                 part.StatementParent = parent.GetText();
+                var tokenInterval = parent.SourceInterval;
+                part.StatementParentWithWhiteSpace = GetWhitespaceStringFromTokenInterval(tokenInterval);
             }
 
             var grandparent = context.Parent.Parent.Parent;
             if (grandparent != null)
             {
                 part.StatementGrandParent = grandparent.GetText();
+                var tokenInterval = grandparent.SourceInterval;
+                part.StatementGrandParentWithWhiteSpace = GetWhitespaceStringFromTokenInterval(tokenInterval);
             }
 
             select.Statements.Add(part);
@@ -92,7 +107,13 @@ namespace QueryParserConsole
         #endregion
 
         #region Private Properties
-        
+        private string GetWhitespaceStringFromTokenInterval(Interval interval)
+        {
+            var start = TokenStream.Get(interval.a).StartIndex;
+            var end = TokenStream.Get(interval.b).StopIndex;
+            Interval i = new Interval(start, end);
+            return _charStream.GetText(i);
+        }
         #endregion
     }
 }
