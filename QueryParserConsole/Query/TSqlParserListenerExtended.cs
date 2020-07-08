@@ -3,6 +3,7 @@ using QueryParserConsole.Query;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.XPath;
 
 namespace QueryParserConsole
 {
@@ -18,19 +19,78 @@ namespace QueryParserConsole
         {
             _statement = statement;
         }
-        #endregion
-
-        #region Public Properties
-        public override void EnterSelect_statement([NotNull] TSqlParser.Select_statementContext context)
+        public TSqlParserListenerExtended(SelectStatement statement)
         {
-            base.EnterSelect_statement(context);
+            _statement = statement;
         }
         #endregion
 
+        #region Public Properties
+        #endregion
+
         #region Public Methods
+        public SelectStatement GetStatementAsSelect()
+        {
+            return _statement as SelectStatement;
+        }
+        public override void ExitSearch_condition([NotNull] TSqlParser.Search_conditionContext context)
+        {
+            base.ExitSearch_condition(context);
+            // this will set the full statement on the final exit
+            var select = GetStatementAsSelect();
+            select.WhereClause = context.GetText();
+        }
+        public override void EnterSelect_statement([NotNull] TSqlParser.Select_statementContext context)
+        {
+            base.EnterSelect_statement(context);
+            var select = GetStatementAsSelect();
+            select.RawStatement = context.GetText();
+        }
+
+        public override void EnterSelect_list([NotNull] TSqlParser.Select_listContext context)
+        {
+            base.EnterSelect_list(context);
+            var select = GetStatementAsSelect();
+            select.SelectListRaw = context.GetText();
+        }
+
+        public override void EnterSelect_list_elem([NotNull] TSqlParser.Select_list_elemContext context)
+        {
+            base.EnterSelect_list_elem(context);
+            var select = GetStatementAsSelect();
+            select.SelectList.Add(context.GetText());
+        }
+
+        public override void EnterSearch_condition([NotNull] TSqlParser.Search_conditionContext context)
+        {
+            base.EnterSearch_condition(context);
+        }
+
+        public override void EnterPredicate([NotNull] TSqlParser.PredicateContext context)
+        {
+            base.EnterPredicate(context);
+            var select = GetStatementAsSelect();
+            var part = new StatementPart();
+            part.Text = context.GetText();
+
+            var parent = context.Parent.Parent;
+            if (parent != null)
+            {
+                part.Text = parent.GetText();
+            }
+
+            var grandparent = context.Parent.Parent.Parent;
+            if (grandparent != null)
+            {
+                part.StatementGrandParent = grandparent.GetText();
+            }
+
+            select.Statements.Add(part);
+        }
         #endregion
 
         #region Private Properties
+        
         #endregion
     }
 }

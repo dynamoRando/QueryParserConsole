@@ -36,6 +36,10 @@ namespace QueryParserConsole
             walker.Walk(loader, parseTree);
             Console.WriteLine("Parse Tree:");
             Console.WriteLine(parseTree.ToStringTree(parser));
+
+            var selectStatement = loader.GetStatementAsSelect();
+            Console.WriteLine("Review Parse. Press any key to continue.");
+            Console.ReadLine();
         }
     }
 }

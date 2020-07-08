@@ -8,12 +8,17 @@ namespace QueryParserConsole.Query
     {
         #region Public Properties
         public List<StatementPart> Statements { get; set; }
+        public List<string> SelectList { get; set; }
+        public string SelectListRaw { get; set; }
+        public string RawStatement { get; set; }
+        public string WhereClause { get; set; }
         #endregion
 
         #region Constructors
         public SelectStatement()
         {
             Statements = new List<StatementPart>();
+            SelectList = new List<string>();
         }
         #endregion
             
