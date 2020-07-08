@@ -73,7 +73,8 @@ namespace QueryParserConsole
             var select = GetStatementAsSelect();
             var part = new StatementPart();
             part.Text = context.GetText();
-            
+            part.StatementOrigin = "EnterPredicate";
+
             var parent = context.Parent.Parent;
             if (parent != null)
             {

@@ -19,7 +19,7 @@ namespace QueryParserConsole
                 input = defaultInput;
             }
 
-            ParseInput(input);
+            ParseInput(input.ToUpper());
             Console.WriteLine("Finished. Press any key to exit.");
             Console.ReadLine();
         }
