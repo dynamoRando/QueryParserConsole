@@ -4,6 +4,7 @@ using QueryParserConsole.Query;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Xml.XPath;
 
@@ -33,6 +34,12 @@ namespace QueryParserConsole
         #endregion
 
         #region Public Methods
+        public override void EnterTable_name([NotNull] TSqlParser.Table_nameContext context)
+        {
+            base.EnterTable_name(context);
+            var select = GetStatementAsSelect();
+            select.Tables.Add(context.GetText());
+        }
         public SelectStatement GetStatementAsSelect()
         {
             return _statement as SelectStatement;
@@ -76,6 +83,7 @@ namespace QueryParserConsole
             Console.WriteLine(context.GetText());
             var select = GetStatementAsSelect();
             var part = new StatementPart();
+            part.StatementTableName = select.Tables.FirstOrDefault();
             part.Text = context.GetText();
             part.StatementOrigin = "EnterPredicate";
 
@@ -102,6 +110,7 @@ namespace QueryParserConsole
                 part.StatementGrandParentWithWhiteSpace = GetWhitespaceStringFromTokenInterval(tokenInterval);
             }
 
+            part.ParseStatementPart();
             select.Statements.Add(part);
         }
         #endregion

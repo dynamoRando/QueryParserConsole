@@ -12,6 +12,7 @@ namespace QueryParserConsole.Query
         public string SelectListRaw { get; set; }
         public string RawStatement { get; set; }
         public string WhereClause { get; set; }
+        public List<string> Tables { get; set; }
         #endregion
 
         #region Constructors
@@ -19,6 +20,7 @@ namespace QueryParserConsole.Query
         {
             Statements = new List<StatementPart>();
             SelectList = new List<string>();
+            Tables = new List<string>();
         }
         #endregion
             
