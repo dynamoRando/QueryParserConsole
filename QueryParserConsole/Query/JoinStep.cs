@@ -9,6 +9,9 @@ namespace QueryParserConsole.Query
         #region Public Properties
         public Guid Id { get; set; }
         public int Level { get; set; }
+        public PlanStep InputOne { get; set; }
+        public PlanStep InputTwo { get; set; }
+        public string Boolean { get; set; }
         #endregion
 
         #region Constructors
