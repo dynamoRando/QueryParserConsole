@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using Newtonsoft.Json;
 using QueryParserConsole.Query;
 using System;
 
@@ -39,8 +40,10 @@ namespace QueryParserConsole
             Console.WriteLine(parseTree.ToStringTree(parser));
 
             var selectStatement = loader.GetStatementAsSelect();
+            var text = JsonConvert.SerializeObject(selectStatement);
             Console.WriteLine("Review Parse. Press any key to continue.");
             Console.ReadLine();
+            Console.WriteLine(text);
         }
     }
 }

@@ -11,6 +11,7 @@ public class SelectStatement : IStatement
     public string SelectListRaw { get; set; }
     public string RawStatement { get; set; }
     public string WhereClause { get; set; }
+    public string WhereClauseWithWhiteSpace { get; set; }
     public List<string> Tables { get; set; }
     #endregion
 

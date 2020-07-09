@@ -50,6 +50,12 @@ namespace QueryParserConsole
             // this will set the full statement on the final exit
             var select = GetStatementAsSelect();
             select.WhereClause = context.GetText();
+
+            int a = context.Start.StartIndex;
+            int b = context.Stop.StopIndex;
+            Interval interval = new Interval(a, b);
+            _charStream = context.Start.InputStream;
+            select.WhereClauseWithWhiteSpace = _charStream.GetText(interval);
         }
         public override void EnterSelect_statement([NotNull] TSqlParser.Select_statementContext context)
         {
@@ -118,10 +124,17 @@ namespace QueryParserConsole
         #region Private Properties
         private string GetWhitespaceStringFromTokenInterval(Interval interval)
         {
-            var start = TokenStream.Get(interval.a).StartIndex;
-            var end = TokenStream.Get(interval.b).StopIndex;
-            Interval i = new Interval(start, end);
-            return _charStream.GetText(i);
+            try
+            {
+                var start = TokenStream.Get(interval.a).StartIndex;
+                var end = TokenStream.Get(interval.b).StopIndex;
+                Interval i = new Interval(start, end);
+                return _charStream.GetText(i);
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
         #endregion
     }
