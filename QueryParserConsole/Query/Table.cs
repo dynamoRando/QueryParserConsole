@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 
-public interface IStatement
+public class Table
 {
+    public string TableName { get; set; }
 }
+

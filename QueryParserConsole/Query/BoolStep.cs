@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-    public class JoinStep : IPlanStep
+    public class BoolStep : IPlanStep
     {
         #region Public Properties
         public Guid Id { get; set; }
