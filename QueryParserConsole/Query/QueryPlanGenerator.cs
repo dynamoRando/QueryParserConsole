@@ -19,7 +19,12 @@ namespace QueryParserConsole.Query
         public QueryPlan GeneratePlan(IStatement statement)
         {
             var plan = new QueryPlan();
-            throw new NotImplementedException();
+            if (statement is SelectStatement)
+            {
+                plan = new SelectQueryPlanGenerator().GeneratePlan((statement as SelectStatement));
+            }
+
+            return plan;
         }
         #endregion
 
