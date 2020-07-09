@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryParserConsole.Query
+public interface IPlanStep
 {
-    public interface IPlanStep
-    {
-        Guid Id { get; set; }
-        int Level { get; set; }
-        public PlanResult GetResult();
-    }
+    Guid Id { get; set; }
+    int Level { get; set; }
+    public PlanResult GetResult();
 }

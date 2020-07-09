@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryParserConsole.Query
-{
+
     public class JoinStep : IPlanStep
     {
         #region Public Properties
@@ -24,4 +23,3 @@ namespace QueryParserConsole.Query
         }
         #endregion
     }
-}

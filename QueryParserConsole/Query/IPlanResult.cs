@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryParserConsole.Query
+
+public interface IPlanResult
 {
-    public interface IPlanResult
-    {
-    }
 }

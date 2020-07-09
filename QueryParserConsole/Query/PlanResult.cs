@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryParserConsole.Query
-{
     public class PlanResult : IPlanResult
     {
         #region Public Properties
@@ -22,4 +20,3 @@ namespace QueryParserConsole.Query
         }
         #endregion
     }
-}
