@@ -242,6 +242,13 @@ public class SelectQueryPlanGenerator
             }
         }
 
+        // we are an outermost term
+        // NAME = BRIAN
+        if (stepParentText.Equals(stepGrandParentText))
+        {
+
+        }
+
         return boolStep;
     }
 
