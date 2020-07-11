@@ -82,7 +82,7 @@ public class SelectQueryPlanGenerator
                 {
                     result.Add(boolStep);
                 }
-                
+
             }
             else
             {
@@ -121,12 +121,13 @@ public class SelectQueryPlanGenerator
 
     private BoolStep GetBoolStepFromStep(SearchStep step, string boolTerm, List<SearchStep> steps, List<BoolStep> boolSteps)
     {
-        
+
         var stepParentText = step.Part.StatementParentWithWhiteSpace;
         var stepGrandParentText = step.Part.StatementGrandParentWithWhiteSpace;
         BoolStep boolStep = null;
-        
-        if (stepParentText.Contains(boolTerm))
+
+        // if the previous step has a BOOLEAN and is not part of a () grouping
+        if (stepParentText.Contains(boolTerm) && !stepParentText.Contains("("))
         {
             var boolstep = new BoolStep();
             boolstep.Level = _level;
@@ -151,11 +152,49 @@ public class SelectQueryPlanGenerator
             }
         }
 
-        if (stepParentText.Equals(step.Part.TextWithWhiteSpace))
+        // if the previous step has a boolean AND is part of a () grouping
+        // AGE > 32
+        if (stepParentText.Contains(boolTerm) && stepParentText.Contains("("))
+        {
+            var clauses = stepParentText.Split('(', ')').ToList();
+            var nextStep = new BoolStep();
+            var lastBoolStep = new BoolStep();
+            foreach(var clause in clauses)
+            {
+                foreach(var b in boolSteps)
+                {
+                    if (b.BoolStepTextWithWhiteSpace.Contains(clause))
+                    {
+                        lastBoolStep = b;
+                        nextStep.InputOne = b;
+                        nextStep.InputTwo = step;
+                        break;
+                    }
+                }
+            }
+
+            var parse = stepParentText;
+            parse = parse.Remove(parse.IndexOf(lastBoolStep.BoolStepTextWithWhiteSpace), lastBoolStep.BoolStepTextWithWhiteSpace.Length);
+            parse = parse.Remove(parse.IndexOf(step.Part.TextWithWhiteSpace), step.Part.TextWithWhiteSpace.Length);
+            if (parse.Contains(" AND "))
+            {
+                nextStep.Boolean = "AND";
+            }
+            if (parse.Contains(" OR "))
+            {
+                nextStep.Boolean = "OR";
+            }
+            nextStep.Level = _level++;
+            nextStep.BoolStepTextWithWhiteSpace = stepParentText;
+            boolStep = nextStep;
+        }
+
+        // if the previous step is part of a multi BOOLEAN (i.e. NAME = MEGAN)
+        if (stepParentText.Equals(step.Part.TextWithWhiteSpace) && !stepGrandParentText.Equals(step.Part.TextWithWhiteSpace))
         {
             var totalBools = 0;
             var words = stepGrandParentText.Split(" ").ToList();
-            foreach(var word in words)
+            foreach (var word in words)
             {
                 if (word.Equals("AND") || word.Equals("OR"))
                 {
@@ -165,9 +204,9 @@ public class SelectQueryPlanGenerator
 
             if (totalBools > 1)
             {
-                // we know we are part of a multi BOOL operation and need to 
+                // we know we are part of a multi BOOL operation at the same level and need to 
                 // find the previous bool operator(s) for the other terms
-                foreach(var b in boolSteps)
+                foreach (var b in boolSteps)
                 {
                     if (b.InputOne is SearchStep && b.InputTwo is SearchStep)
                     {
@@ -176,7 +215,27 @@ public class SelectQueryPlanGenerator
                         if (stepGrandParentText.Contains(input1.Part.TextWithWhiteSpace) &&
                             stepGrandParentText.Contains(input2.Part.TextWithWhiteSpace))
                         {
-                            // we need to link this boolstep to 
+                            // we need to link this boolstep to the next planstep
+                            var nextStep = new BoolStep();
+                            nextStep.Level = _level++;
+                            nextStep.InputOne = b;
+                            nextStep.InputTwo = step;
+                            var parse = stepGrandParentText;
+                            parse = parse.Remove(parse.IndexOf(input1.Part.TextWithWhiteSpace), input1.Part.TextWithWhiteSpace.Length);
+                            parse = parse.Remove(parse.IndexOf(b.Boolean), b.Boolean.Length);
+                            parse = parse.Remove(parse.IndexOf(input2.Part.TextWithWhiteSpace), input2.Part.TextWithWhiteSpace.Length);
+                            parse = parse.Remove(parse.IndexOf(step.Part.TextWithWhiteSpace), step.Part.TextWithWhiteSpace.Length);
+                            if (parse.Contains(" AND "))
+                            {
+                                nextStep.Boolean = "AND";
+                            }
+                            if (parse.Contains(" OR "))
+                            {
+                                nextStep.Boolean = "OR";
+                            }
+                            nextStep.BoolStepTextWithWhiteSpace = stepGrandParentText;
+                            boolStep = nextStep;
+                            break;
                         }
                     }
                 }
