@@ -75,7 +75,7 @@ public class SelectQueryPlanGenerator
         foreach (var step in steps)
         {
             BoolStep boolStep = null;
-            boolStep = GetBoolStepFromStep(step, " AND ", steps);
+            boolStep = GetBoolStepFromStep(step, " AND ", steps, result);
             if (boolStep != null)
             {
                 if (IsValidBoolStep(boolStep))
@@ -86,7 +86,7 @@ public class SelectQueryPlanGenerator
             }
             else
             {
-                boolStep = GetBoolStepFromStep(step, " OR ", steps);
+                boolStep = GetBoolStepFromStep(step, " OR ", steps, result);
                 if (boolStep != null)
                 {
                     if (IsValidBoolStep(boolStep))
@@ -119,7 +119,7 @@ public class SelectQueryPlanGenerator
         }
     }
 
-    private BoolStep GetBoolStepFromStep(SearchStep step, string boolTerm, List<SearchStep> steps)
+    private BoolStep GetBoolStepFromStep(SearchStep step, string boolTerm, List<SearchStep> steps, List<BoolStep> boolSteps)
     {
         
         var stepParentText = step.Part.StatementParentWithWhiteSpace;
@@ -134,7 +134,7 @@ public class SelectQueryPlanGenerator
             boolstep.InputOne = step;
             int indexOfBool = stepParentText.IndexOf(boolTerm);
 
-            // need to find the other half of the AND statement
+            // need to find the other half of the BOOL statement
             var otherTermText = stepParentText.Substring(indexOfBool);
             var otherTerm = steps.Where(s => s.Part.TextWithWhiteSpace.Equals(otherTermText)).FirstOrDefault();
             if (otherTerm != null)
@@ -152,8 +152,35 @@ public class SelectQueryPlanGenerator
         }
 
         if (stepParentText.Equals(step.Part.TextWithWhiteSpace))
-        { 
+        {
+            var totalBools = 0;
+            var words = stepGrandParentText.Split(" ").ToList();
+            foreach(var word in words)
+            {
+                if (word.Equals("AND") || word.Equals("OR"))
+                {
+                    totalBools++;
+                }
+            }
 
+            if (totalBools > 1)
+            {
+                // we know we are part of a multi BOOL operation and need to 
+                // find the previous bool operator(s) for the other terms
+                foreach(var b in boolSteps)
+                {
+                    if (b.InputOne is SearchStep && b.InputTwo is SearchStep)
+                    {
+                        var input1 = (b.InputOne as SearchStep);
+                        var input2 = (b.InputTwo as SearchStep);
+                        if (stepGrandParentText.Contains(input1.Part.TextWithWhiteSpace) &&
+                            stepGrandParentText.Contains(input2.Part.TextWithWhiteSpace))
+                        {
+                            // we need to link this boolstep to 
+                        }
+                    }
+                }
+            }
         }
 
         return boolStep;
