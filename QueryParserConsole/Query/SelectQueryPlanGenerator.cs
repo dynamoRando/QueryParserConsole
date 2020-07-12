@@ -174,9 +174,9 @@ public class SelectQueryPlanGenerator
             var clauses = stepParentText.Split('(', ')').ToList();
             var nextStep = new BoolStep();
             var lastBoolStep = new BoolStep();
-            foreach(var clause in clauses)
+            foreach (var clause in clauses)
             {
-                foreach(var b in boolSteps)
+                foreach (var b in boolSteps)
                 {
                     if (b.BoolStepTextWithWhiteSpace.Contains(clause))
                     {
@@ -272,8 +272,57 @@ public class SelectQueryPlanGenerator
             }
         }
 
+        if (boolStep != null)
+        {
+            DebugBoolStep(boolStep);
+        }
+        
         return boolStep;
     }
 
+
+    private void DebugBoolStep(BoolStep step)
+    {
+
+        Console.WriteLine($"DebugBoolStep: Operator {step.Boolean}");
+
+        if (step.InputOne != null)
+        {
+            if (step.InputOne is SearchStep)
+            {
+                var a = (step.InputOne as SearchStep);
+                Console.WriteLine($"BoolStep Debug: Input 1: {a.Part.TextWithWhiteSpace}");
+            }
+
+            if (step.InputOne is BoolStep)
+            {
+                Console.WriteLine($"BoolStep Debug: Input 1 is BoolStep");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"BoolStep Debug: Input 1 is null");
+        }
+
+        if (step.InputTwo != null)
+        {
+            if (step.InputTwo is SearchStep)
+            {
+                var b = (step.InputTwo as SearchStep);
+                Console.WriteLine($"BoolStep Debug: Input 2: {b.Part.TextWithWhiteSpace}");
+            }
+
+            if (step.InputTwo is BoolStep)
+            {
+                Console.WriteLine($"BoolStep Debug: Input 2 is BoolStep");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"BoolStep Debug: Input 2 is null");
+        }
+
+
+    }
     #endregion
 }

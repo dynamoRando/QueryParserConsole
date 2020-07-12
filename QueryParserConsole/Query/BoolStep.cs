@@ -46,7 +46,7 @@ public class BoolStep : IPlanStep
             var c = (InputTwo as SearchStep);
             c.GetResultText();
         }
-        if (InputOne is BoolStep)
+        if (InputTwo is BoolStep)
         {
             var d = (InputTwo as BoolStep);
             d.GetResultText();
