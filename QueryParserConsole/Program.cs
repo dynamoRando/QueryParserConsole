@@ -11,13 +11,26 @@ namespace QueryParserConsole
         static void Main(string[] args)
         {
             string defaultInput = "SELECT NAME, AGE, RANK FROM EMPLOYEE WHERE ((NAME LIKE '%RANDY%' AND RANK = 2 OR NAME = 'MEGAN') AND AGE > 32) OR (NAME = 'BRIAN')";
+            string inputA = "SELECT NAME FROM EMPLOYEE";
+            string inputB = "SELECT NAME FROM EMPLOYEE WHERE (AGE > 20)";
             
             Console.WriteLine("QueryParserConsole. Used to test how Antlr will parse queries.");
             Console.WriteLine("Enter a query to parse or (d) for default.");
             var input = Console.ReadLine();
+            
             if (input.Equals("d"))
             {
                 input = defaultInput;
+            }
+
+            if (input.Equals("a"))
+            {
+                input = inputA;
+            }
+
+            if (input.Equals("b"))
+            {
+                input = inputB;
             }
 
             ParseInput(input.ToUpper());
@@ -47,7 +60,7 @@ namespace QueryParserConsole
 
             Console.WriteLine("Executing Generated Plan");
             GeneratePlan(selectStatement);
-            Console.Write("Press any key to continue");
+            Console.Write("Press enter key to continue");
             Console.ReadLine();
         }
 

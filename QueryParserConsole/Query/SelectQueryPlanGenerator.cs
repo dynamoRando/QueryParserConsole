@@ -232,6 +232,7 @@ public class SelectQueryPlanGenerator
                         {
                             // we need to link this boolstep to the next planstep
                             var nextStep = new BoolStep();
+                            nextStep.Boolean = boolTerm.Trim();
                             nextStep.Level = _level++;
                             nextStep.InputOne = b;
                             nextStep.InputTwo = step;
@@ -259,16 +260,46 @@ public class SelectQueryPlanGenerator
 
         // we are an outermost term
         // NAME = BRIAN
-        if (stepParentText.Equals(stepGrandParentText))
+        if (stepParentText.Equals(stepGrandParentText) && boolStep is null)
         {
-            int maxLevel = boolSteps.Max(i => i.Level);
-            var maxStep = boolSteps.Where(i => i.Level == maxLevel).FirstOrDefault();
-            if (maxStep != null)
+            if (boolSteps.Count > 0)
             {
-                boolStep = new BoolStep();
-                boolStep.InputOne = maxStep;
-                boolStep.InputTwo = step;
-                boolStep.Level = maxLevel++;
+                int maxLevel = boolSteps.Max(i => i.Level);
+                var maxStep = boolSteps.Where(i => i.Level == maxLevel).FirstOrDefault();
+                if (maxStep != null)
+                {
+                    boolStep = new BoolStep();
+                    boolStep.InputOne = maxStep;
+                    boolStep.InputTwo = step;
+                    boolStep.Level = maxLevel++;
+
+                    // need to find the boolean operator
+                    var text = _statement.WhereClauseWithWhiteSpace;
+                    foreach (var k in steps)
+                    {
+                        if (k.Part == step.Part)
+                        {
+                            break;
+                        }
+
+                        int i = text.IndexOf(k.Part.TextWithWhiteSpace);
+                        text = text.Remove(i, k.Part.TextWithWhiteSpace.Length);
+                    }
+
+                    var par = text.Split('(', ')').ToList();
+                    par.RemoveAll(p => string.IsNullOrEmpty(p));
+                    int previousItem = 0;
+
+                    foreach (var r in par)
+                    {
+                        if (r == step.Part.TextWithWhiteSpace)
+                        {
+                            previousItem = par.IndexOf(r) - 1;
+                        }
+                    }
+
+                    boolStep.Boolean = par[previousItem].Trim();
+                }
             }
         }
 
@@ -283,8 +314,14 @@ public class SelectQueryPlanGenerator
 
     private void DebugBoolStep(BoolStep step)
     {
-
-        Console.WriteLine($"BoolStep Debug: Operator {step.Boolean}");
+        if (!string.IsNullOrEmpty(step.Boolean))
+        {
+            Console.WriteLine($"BoolStep Debug: Operator {step.Boolean}");
+        }
+        else
+        {
+            Console.WriteLine($"BoolStep Debug: Operator MISSING");
+        }
 
         if (step.InputOne != null)
         {
