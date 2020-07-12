@@ -77,12 +77,17 @@ public class SelectQueryPlanGenerator
 
         foreach (var step in steps)
         {
+            Console.WriteLine($"GetBooleanSteps: {step.Part.TextWithWhiteSpace}");
+
             BoolStep boolStep = null;
             boolStep = GetBoolStepFromStep(step, " AND ", steps, result);
             if (boolStep != null)
             {
                 if (IsValidBoolStep(boolStep))
                 {
+
+                    Console.WriteLine("GetBooleanSteps: Adding Step.");
+
                     result.Add(boolStep);
                 }
 
@@ -94,6 +99,9 @@ public class SelectQueryPlanGenerator
                 {
                     if (IsValidBoolStep(boolStep))
                     {
+
+                        Console.WriteLine("GetBooleanSteps: Adding Step.");
+
                         result.Add(boolStep);
                     }
                 }
@@ -125,6 +133,8 @@ public class SelectQueryPlanGenerator
     private BoolStep GetBoolStepFromStep(SearchStep step, string boolTerm, List<SearchStep> steps, List<BoolStep> boolSteps)
     {
 
+        Console.WriteLine($"GetBoolStepFromStep: {step.Part.TextWithWhiteSpace}");
+
         var stepParentText = step.Part.StatementParentWithWhiteSpace;
         var stepGrandParentText = step.Part.StatementGrandParentWithWhiteSpace;
         BoolStep boolStep = null;
@@ -132,21 +142,23 @@ public class SelectQueryPlanGenerator
         // if the previous step has a BOOLEAN and is not part of a () grouping
         if (stepParentText.Contains(boolTerm) && !stepParentText.Contains("("))
         {
-            var boolstep = new BoolStep();
-            boolstep.Level = _level;
-            boolstep.Boolean = boolTerm.Trim();
-            boolstep.InputOne = step;
+            boolStep = new BoolStep();
+            boolStep.Level = _level;
+            boolStep.Boolean = boolTerm.Trim();
+            boolStep.InputOne = step;
             int indexOfBool = stepParentText.IndexOf(boolTerm);
 
             // need to find the other half of the BOOL statement
             var otherTermText = stepParentText.Substring(indexOfBool);
+            int i = otherTermText.IndexOf(boolTerm);
+            otherTermText = otherTermText.Remove(i, boolTerm.Length);
             var otherTerm = steps.Where(s => s.Part.TextWithWhiteSpace.Equals(otherTermText)).FirstOrDefault();
             if (otherTerm != null)
             {
                 // make sure we don't already have a boolstep for ourselves
                 if (otherTerm.Part.Text != step.Part.Text)
                 {
-                    boolstep.InputTwo = otherTerm;
+                    boolStep.InputTwo = otherTerm;
                 }
                 else
                 {

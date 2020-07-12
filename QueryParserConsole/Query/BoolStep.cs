@@ -15,6 +15,11 @@ public class BoolStep : IPlanStep
     #endregion
 
     #region Constructors
+    public BoolStep()
+    {
+        BoolStepTextWithWhiteSpace = string.Empty;
+        Boolean = string.Empty;
+    }
     #endregion
 
     #region Public Methods
@@ -27,8 +32,8 @@ public class BoolStep : IPlanStep
     {
         if (InputOne is SearchStep)
         {
-            var search = (InputOne as SearchStep);
-            search.GetResultText();
+            var a = (InputOne as SearchStep);
+            a.GetResultText();
         }
         if (InputOne is BoolStep)
         {
@@ -38,13 +43,13 @@ public class BoolStep : IPlanStep
 
         if (InputTwo is SearchStep)
         {
-            var search = (InputTwo as SearchStep);
-            search.GetResultText();
+            var c = (InputTwo as SearchStep);
+            c.GetResultText();
         }
         if (InputOne is BoolStep)
         {
-            var b = (InputTwo as BoolStep);
-            b.GetResultText();
+            var d = (InputTwo as BoolStep);
+            d.GetResultText();
         }
 
         Console.WriteLine($"Combining Results with {Boolean}");
