@@ -284,7 +284,7 @@ public class SelectQueryPlanGenerator
     private void DebugBoolStep(BoolStep step)
     {
 
-        Console.WriteLine($"DebugBoolStep: Operator {step.Boolean}");
+        Console.WriteLine($"BoolStep Debug: Operator {step.Boolean}");
 
         if (step.InputOne != null)
         {
