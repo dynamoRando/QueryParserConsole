@@ -34,7 +34,10 @@ public class SelectQueryPlanGenerator
         var searchEndSteps = GetSearchParts(endStatements);
         var booleanSteps = GetBooleanSteps(searchEndSteps);
 
-        throw new NotImplementedException();
+        plan.Steps.AddRange(searchEndSteps);
+        plan.Steps.AddRange(booleanSteps);
+
+        return plan;
     }
     #endregion
 
@@ -246,7 +249,15 @@ public class SelectQueryPlanGenerator
         // NAME = BRIAN
         if (stepParentText.Equals(stepGrandParentText))
         {
-
+            int maxLevel = boolSteps.Max(i => i.Level);
+            var maxStep = boolSteps.Where(i => i.Level == maxLevel).FirstOrDefault();
+            if (maxStep != null)
+            {
+                boolStep = new BoolStep();
+                boolStep.InputOne = maxStep;
+                boolStep.InputTwo = step;
+                boolStep.Level = maxLevel++;
+            }
         }
 
         return boolStep;

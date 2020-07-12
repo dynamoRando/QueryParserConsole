@@ -44,6 +44,19 @@ namespace QueryParserConsole
             Console.WriteLine("Review Parse. Press any key to continue.");
             Console.ReadLine();
             Console.WriteLine(text);
+
+            Console.WriteLine("Executing Generated Plan");
+            GeneratePlan(selectStatement);
+            Console.Write("Press any key to continue");
+            Console.ReadLine();
+        }
+
+        static void GeneratePlan(SelectStatement statement) 
+        {
+            var executor = new QueryPlanExecutor();
+            var generator = new SelectQueryPlanGenerator();
+            var plan = generator.GeneratePlan(statement);
+            executor.Execute(plan);
         }
     }
 }

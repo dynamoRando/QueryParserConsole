@@ -28,5 +28,10 @@ public class SearchStep : IPlanStep
     {
         throw new NotImplementedException();
     }
+
+    public void GetResultText()
+    {
+        Console.WriteLine($"Executing Search: {Part.TextWithWhiteSpace}");
+    }
     #endregion
 }

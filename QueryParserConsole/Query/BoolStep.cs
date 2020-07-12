@@ -22,5 +22,36 @@ public class BoolStep : IPlanStep
     {
         throw new NotImplementedException();
     }
+
+    public void GetResultText()
+    {
+        if (InputOne is SearchStep)
+        {
+            var search = (InputOne as SearchStep);
+            search.GetResultText();
+        }
+        if (InputOne is BoolStep)
+        {
+            var b = (InputOne as BoolStep);
+            b.GetResultText();
+        }
+
+        if (InputTwo is SearchStep)
+        {
+            var search = (InputTwo as SearchStep);
+            search.GetResultText();
+        }
+        if (InputOne is BoolStep)
+        {
+            var b = (InputTwo as BoolStep);
+            b.GetResultText();
+        }
+
+        Console.WriteLine($"Combining Results with {Boolean}");
+
+    }
+    #endregion
+
+    #region Private Methods
     #endregion
 }
