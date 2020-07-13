@@ -41,6 +41,11 @@ public class PlanStep : IPlanStep
     {
         throw new NotImplementedException();
     }
+
+    public void GetResultText()
+    {
+        throw new NotImplementedException();
+    }
     #endregion
 
     #region Private Methods

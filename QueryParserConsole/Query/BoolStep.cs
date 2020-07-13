@@ -31,30 +31,13 @@ public class BoolStep : IPlanStep
 
     public void GetResultText()
     {
-
+        Console.WriteLine("Executing BoolStep:");
         Console.WriteLine($"BoolStep Id: {Id.ToString()}");
 
-        if (InputOne is SearchStep)
-        {
-            var a = (InputOne as SearchStep);
-            a.GetResultText();
-        }
-        if (InputOne is BoolStep)
-        {
-            var b = (InputOne as BoolStep);
-            b.GetResultText();
-        }
-
-        if (InputTwo is SearchStep)
-        {
-            var c = (InputTwo as SearchStep);
-            c.GetResultText();
-        }
-        if (InputTwo is BoolStep)
-        {
-            var d = (InputTwo as BoolStep);
-            d.GetResultText();
-        }
+        Console.WriteLine($"BoolStep Executing Input 1:");
+        InputOne.GetResultText();
+        Console.WriteLine($"BoolStep Executing Input 2:");
+        InputTwo.GetResultText();
 
         Console.WriteLine($"Combining Results with {Boolean}");
 

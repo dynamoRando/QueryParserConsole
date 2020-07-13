@@ -34,22 +34,7 @@ namespace QueryParserConsole.Query
             {
                 Console.WriteLine("Executing Step...");
                 Console.WriteLine($"Step Level: {step.Level.ToString()}");
-                switch (step)
-                {
-                    case BoolStep b:
-                        Console.WriteLine("Executing BoolStep:");
-                        b.GetResultText();
-                        break;
-                    case PlanStep p:
-                        Console.WriteLine("Executing PlanStep: ");
-                        break;
-                    case SearchStep s:
-                        Console.WriteLine($"Executing SearchStep:");
-                        s.GetResultText();
-                        break;
-                    default:
-                        break;
-                }
+                step.GetResultText();
             }
         }
         #endregion

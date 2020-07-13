@@ -34,6 +34,7 @@ public class SearchStep : IPlanStep
 
     public void GetResultText()
     {
+        Console.WriteLine($"Executing SearchStep:");
         Console.WriteLine($"SearchStep Id: {Id.ToString()}");
         Console.WriteLine($"Executing Search: {Part.TextWithWhiteSpace}");
     }
