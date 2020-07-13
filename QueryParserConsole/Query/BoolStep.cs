@@ -19,6 +19,7 @@ public class BoolStep : IPlanStep
     {
         BoolStepTextWithWhiteSpace = string.Empty;
         Boolean = string.Empty;
+        Id = Guid.NewGuid();
     }
     #endregion
 
@@ -30,6 +31,9 @@ public class BoolStep : IPlanStep
 
     public void GetResultText()
     {
+
+        Console.WriteLine($"BoolStep Id: {Id.ToString()}");
+
         if (InputOne is SearchStep)
         {
             var a = (InputOne as SearchStep);

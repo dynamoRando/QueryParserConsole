@@ -16,8 +16,11 @@ public class SearchStep : IPlanStep
     #endregion
 
     #region Constructors
-    public SearchStep() { }
-    public SearchStep(StatementPart part)
+    public SearchStep() 
+    {
+        Id = Guid.NewGuid();
+    }
+    public SearchStep(StatementPart part) : this()
     {
         _part = part;
     }
@@ -31,6 +34,7 @@ public class SearchStep : IPlanStep
 
     public void GetResultText()
     {
+        Console.WriteLine($"SearchStep Id: {Id.ToString()}");
         Console.WriteLine($"Executing Search: {Part.TextWithWhiteSpace}");
     }
     #endregion
