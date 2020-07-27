@@ -13,6 +13,8 @@ namespace QueryParserConsole
             string defaultInput = "SELECT NAME, AGE, RANK FROM EMPLOYEE WHERE ((NAME LIKE '%RANDY%' AND RANK = 2 OR NAME = 'MEGAN') AND AGE > 32) OR (NAME = 'BRIAN')";
             string inputA = "SELECT NAME FROM EMPLOYEE";
             string inputB = "SELECT NAME FROM EMPLOYEE WHERE (AGE > 20)";
+
+            string insertStatement = "INSERT INTO EMPLOYEE (NAME, AGE, MANAGER) VALUES ('RANDY', 35, 'MEGAN')";
             
             Console.WriteLine("QueryParserConsole. Used to test how Antlr will parse queries.");
             Console.WriteLine("Enter a query to parse or (d) for default.");
@@ -31,6 +33,11 @@ namespace QueryParserConsole
             if (input.Equals("b"))
             {
                 input = inputB;
+            }
+
+            if (input.Equals("i"))
+            {
+                input = insertStatement;
             }
 
             ParseInput(input.ToUpper());
