@@ -15,11 +15,11 @@ namespace QueryParserConsole
             string inputB = "SELECT NAME FROM EMPLOYEE WHERE (AGE > 20)";
 
             string insertStatement = "INSERT INTO EMPLOYEE (NAME, AGE, MANAGER) VALUES ('RANDY', 35, 'MEGAN')";
-            
+
             Console.WriteLine("QueryParserConsole. Used to test how Antlr will parse queries.");
             Console.WriteLine("Enter a query to parse or (d) for default.");
             var input = Console.ReadLine();
-            
+
             if (input.Equals("d"))
             {
                 input = defaultInput;
@@ -59,19 +59,23 @@ namespace QueryParserConsole
             Console.WriteLine("Parse Tree:");
             Console.WriteLine(parseTree.ToStringTree(parser));
 
-            var selectStatement = loader.GetStatementAsSelect();
-            var text = JsonConvert.SerializeObject(selectStatement);
-            Console.WriteLine("Review Parse. Press any key to continue.");
-            Console.ReadLine();
-            Console.WriteLine(text);
+            if (input.Contains("SELECT"))
+            {
+                var selectStatement = loader.GetStatementAsSelect();
+                var text = JsonConvert.SerializeObject(selectStatement);
+                Console.WriteLine("Review Parse. Press any key to continue.");
+                Console.ReadLine();
+                Console.WriteLine(text);
 
-            Console.WriteLine("Executing Generated Plan");
-            GeneratePlan(selectStatement);
+                Console.WriteLine("Executing Generated Plan");
+                GeneratePlan(selectStatement);
+            }
+
             Console.Write("Press enter key to continue");
             Console.ReadLine();
         }
 
-        static void GeneratePlan(SelectStatement statement) 
+        static void GeneratePlan(SelectStatement statement)
         {
             var executor = new QueryPlanExecutor();
             var generator = new SelectQueryPlanGenerator();

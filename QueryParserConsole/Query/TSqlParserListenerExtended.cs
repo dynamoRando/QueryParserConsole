@@ -119,6 +119,41 @@ namespace QueryParserConsole
             part.ParseStatementPart();
             select.Statements.Add(part);
         }
+ 
+        public override void EnterInsert_statement([NotNull] TSqlParser.Insert_statementContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+
+        public override void EnterFull_table_name(TSqlParser.Full_table_nameContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+
+        public override void EnterColumn_name_list(TSqlParser.Column_name_listContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+        
+        public override void EnterSimple_id(TSqlParser.Simple_idContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+
+        public override void EnterInsert_statement_value(TSqlParser.Insert_statement_valueContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+
+        public override void EnterExpression_list(TSqlParser.Expression_listContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+
+        public override void EnterPrimitive_expression(TSqlParser.Primitive_expressionContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
         #endregion
 
         #region Private Properties
