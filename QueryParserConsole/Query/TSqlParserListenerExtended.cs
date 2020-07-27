@@ -120,6 +120,7 @@ namespace QueryParserConsole
             select.Statements.Add(part);
         }
  
+        // begin insert functions
         public override void EnterInsert_statement([NotNull] TSqlParser.Insert_statementContext context)
         {
             Console.WriteLine(context.GetText());
@@ -154,6 +155,37 @@ namespace QueryParserConsole
         {
             Console.WriteLine(context.GetText());
         }
+
+        // end insert functions
+
+        // begin update functions
+        public override void EnterUpdate_statement(TSqlParser.Update_statementContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+
+        public override void EnterUpdate_elem(TSqlParser.Update_elemContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+
+        public override void EnterSearch_condition_list(TSqlParser.Search_condition_listContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+        // end update functions
+
+        // begin delete functions
+        public override void EnterDelete_statement(TSqlParser.Delete_statementContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+
+        public override void EnterDelete_statement_from(TSqlParser.Delete_statement_fromContext context)
+        {
+            Console.WriteLine(context.GetText());
+        }
+        // end delete functions
         #endregion
 
         #region Private Properties

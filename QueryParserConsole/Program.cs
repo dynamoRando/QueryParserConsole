@@ -16,11 +16,15 @@ namespace QueryParserConsole
 
             string insertStatement = "INSERT INTO EMPLOYEE (NAME, AGE, MANAGER) VALUES ('RANDY', 35, 'MEGAN')";
 
+            string updateStatement = "UPDATE EMPLOYEE SET NAME = 'RANDY LE' WHERE NAME = 'RANDY' AND AGE = 35";
+
+            string deleteStatement = "DELETE FROM EMPLOYEE WHERE NAME = 'JIM'";
+
             Console.WriteLine("QueryParserConsole. Used to test how Antlr will parse queries.");
             Console.WriteLine("Enter a query to parse or (d) for default.");
             var input = Console.ReadLine();
 
-            if (input.Equals("d"))
+            if (input.Equals("default"))
             {
                 input = defaultInput;
             }
@@ -38,6 +42,16 @@ namespace QueryParserConsole
             if (input.Equals("i"))
             {
                 input = insertStatement;
+            }
+
+            if (input.Equals("u"))
+            {
+                input = updateStatement;
+            }
+
+            if (input.Equals("d"))
+            {
+                input = deleteStatement;
             }
 
             ParseInput(input.ToUpper());
