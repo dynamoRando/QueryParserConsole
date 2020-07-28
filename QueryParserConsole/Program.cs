@@ -15,6 +15,7 @@ namespace QueryParserConsole
             string inputB = "SELECT NAME FROM EMPLOYEE WHERE (AGE > 20)";
 
             string insertStatement = "INSERT INTO EMPLOYEE (NAME, AGE, MANAGER) VALUES ('RANDY', 35, 'MEGAN')";
+            string insertStatement2 = "INSERT INTO EMPLOYEE (NAME, AGE, MANAGER) VALUES ('RANDY', 35, 'MEGAN'), ('MEGAN', 36, 'MEGAN'), ('CAM', 38, 'MEGAN')";
 
             string updateStatement = "UPDATE EMPLOYEE SET NAME = 'RANDY LE' WHERE NAME = 'RANDY' AND AGE = 35";
 
@@ -42,6 +43,11 @@ namespace QueryParserConsole
             if (input.Equals("i"))
             {
                 input = insertStatement;
+            }
+
+            if (input.Equals("i2"))
+            {
+                input = insertStatement2;
             }
 
             if (input.Equals("u"))
