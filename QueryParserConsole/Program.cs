@@ -13,13 +13,20 @@ namespace QueryParserConsole
             string defaultInput = "SELECT NAME, AGE, RANK FROM EMPLOYEE WHERE ((NAME LIKE '%RANDY%' AND RANK = 2 OR NAME = 'MEGAN') AND AGE > 32) OR (NAME = 'BRIAN')";
             string inputA = "SELECT NAME FROM EMPLOYEE";
             string inputB = "SELECT NAME FROM EMPLOYEE WHERE (AGE > 20)";
-
             string insertStatement = "INSERT INTO EMPLOYEE (NAME, AGE, MANAGER) VALUES ('RANDY', 35, 'MEGAN')";
             string insertStatement2 = "INSERT INTO EMPLOYEE (NAME, AGE, MANAGER) VALUES ('RANDY', 35, 'MEGAN'), ('MEGAN', 36, 'MEGAN'), ('CAM', 38, 'MEGAN')";
-
             string updateStatement = "UPDATE EMPLOYEE SET NAME = 'RANDY LE', AGE = 36 WHERE NAME = 'RANDY' AND AGE = 35";
-
             string deleteStatement = "DELETE FROM EMPLOYEE WHERE NAME = 'JIM'";
+
+            string createTable = @"
+            CREATE TABLE EMPLOYEE
+            (
+                ID INT IDENTITY(1,1),
+                EMPLOYEENAME NVARCHAR(25) NOT NULL,
+                HIREDATE DATETIME NOT NULL,
+                TERMDATE DATETIME NULL
+            );
+            ";
 
             Console.WriteLine("QueryParserConsole. Used to test how Antlr will parse queries.");
             Console.WriteLine("Enter a query to parse or (d) for default.");
@@ -60,8 +67,39 @@ namespace QueryParserConsole
                 input = deleteStatement;
             }
 
-            ParseInput(input.ToUpper());
+            if (input.Equals("ct"))
+            {
+                input = createTable;
+            }
+
+            if (input.Contains("CREATE"))
+            {
+                ParseDDLClause(input);
+            }
+            else
+            {
+                ParseInput(input.ToUpper());
+            }
+
             Console.WriteLine("Finished. Press any key to exit.");
+            Console.ReadLine();
+        }
+
+        static void ParseDDLClause(string input)
+        {
+            AntlrInputStream inputStream = new AntlrInputStream(input);
+            TSqlLexer lexer = new TSqlLexer(inputStream);
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            TSqlParser parser = new TSqlParser(tokens);
+            var parseTree = parser.ddl_clause();
+            ParseTreeWalker walker = new ParseTreeWalker();
+            TSqlParserListenerExtended loader = new TSqlParserListenerExtended(new SelectStatement());
+            loader.TokenStream = tokens;
+            walker.Walk(loader, parseTree);
+            Console.WriteLine("Parse Tree:");
+            Console.WriteLine(parseTree.ToStringTree(parser));
+
+            Console.Write("Press enter key to continue");
             Console.ReadLine();
         }
 
