@@ -220,6 +220,20 @@ namespace QueryParserConsole
         }
 
         // end create table functions
+
+        // begin create database functions
+        public override void EnterCreate_database([NotNull] TSqlParser.Create_databaseContext context)
+        {
+            base.EnterCreate_database(context);
+            Console.WriteLine(context.GetText());
+        }
+
+        public override void EnterId([NotNull] TSqlParser.IdContext context)
+        {
+            base.EnterId(context);
+            Console.WriteLine(context.GetText());
+        }
+        // end create database functions
         #endregion
 
         #region Private Properties

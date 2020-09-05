@@ -17,6 +17,7 @@ namespace QueryParserConsole
             string insertStatement2 = "INSERT INTO EMPLOYEE (NAME, AGE, MANAGER) VALUES ('RANDY', 35, 'MEGAN'), ('MEGAN', 36, 'MEGAN'), ('CAM', 38, 'MEGAN')";
             string updateStatement = "UPDATE EMPLOYEE SET NAME = 'RANDY LE', AGE = 36 WHERE NAME = 'RANDY' AND AGE = 35";
             string deleteStatement = "DELETE FROM EMPLOYEE WHERE NAME = 'JIM'";
+            string createDbStatement = "CREATE DATABASE BIN1";
 
             string createTable = @"
             CREATE TABLE EMPLOYEE
@@ -70,6 +71,11 @@ namespace QueryParserConsole
             if (input.Equals("ct"))
             {
                 input = createTable;
+            }
+
+            if (input.Equals("cdb"))
+            {
+                input = createDbStatement;
             }
 
             if (input.Contains("CREATE"))
