@@ -195,6 +195,16 @@ namespace QueryParserConsole
             Console.WriteLine(context.GetText());
         }
 
+        public override void EnterDml_clause([NotNull] TSqlParser.Dml_clauseContext context)
+        {
+            base.EnterDml_clause(context);
+        }
+
+        public override void EnterDdl_clause([NotNull] TSqlParser.Ddl_clauseContext context)
+        {
+            base.EnterDdl_clause(context);
+        }
+
         public override void EnterData_type([NotNull] TSqlParser.Data_typeContext context)
         {
             base.EnterData_type(context);

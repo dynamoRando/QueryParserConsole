@@ -10,6 +10,7 @@ namespace QueryParserConsole
     {
         static void Main(string[] args)
         {
+            string failure = "THE QUICK BROWN FOX";
             string defaultInput = "SELECT NAME, AGE, RANK FROM EMPLOYEE WHERE ((NAME LIKE '%RANDY%' AND RANK = 2 OR NAME = 'MEGAN') AND AGE > 32) OR (NAME = 'BRIAN')";
             string inputA = "SELECT NAME FROM EMPLOYEE";
             string inputB = "SELECT NAME FROM EMPLOYEE WHERE (AGE > 20)";
@@ -46,6 +47,11 @@ namespace QueryParserConsole
             if (input.Equals("b"))
             {
                 input = inputB;
+            }
+
+            if (input.Equals("failure"))
+            {
+                input = failure;
             }
 
             if (input.Equals("i"))
@@ -97,6 +103,10 @@ namespace QueryParserConsole
             TSqlLexer lexer = new TSqlLexer(inputStream);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             TSqlParser parser = new TSqlParser(tokens);
+
+            var errorHandler = new SyntaxErrorListener();
+            parser.AddErrorListener(errorHandler);
+
             var parseTree = parser.ddl_clause();
             ParseTreeWalker walker = new ParseTreeWalker();
             TSqlParserListenerExtended loader = new TSqlParserListenerExtended(new SelectStatement());
@@ -104,6 +114,12 @@ namespace QueryParserConsole
             walker.Walk(loader, parseTree);
             Console.WriteLine("Parse Tree:");
             Console.WriteLine(parseTree.ToStringTree(parser));
+
+            Console.WriteLine("Errors:");
+            foreach (var error in errorHandler.Errors)
+            {
+                Console.WriteLine(error.Message + " at position " + error.Line.ToString() + ":" + error.CharPositionInLine.ToString());
+            }
 
             Console.Write("Press enter key to continue");
             Console.ReadLine();
@@ -115,6 +131,11 @@ namespace QueryParserConsole
             TSqlLexer lexer = new TSqlLexer(inputStream);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             TSqlParser parser = new TSqlParser(tokens);
+
+            var errorHandler = new SyntaxErrorListener();
+            parser.AddErrorListener(errorHandler);
+
+
             var parseTree = parser.dml_clause();
             ParseTreeWalker walker = new ParseTreeWalker();
             TSqlParserListenerExtended loader = new TSqlParserListenerExtended(new SelectStatement());
@@ -122,6 +143,12 @@ namespace QueryParserConsole
             walker.Walk(loader, parseTree);
             Console.WriteLine("Parse Tree:");
             Console.WriteLine(parseTree.ToStringTree(parser));
+
+            Console.WriteLine("Errors:");
+            foreach (var error in errorHandler.Errors)
+            {
+                Console.WriteLine(error.Message + " at position " + error.Line.ToString() + ":" + error.CharPositionInLine.ToString());
+            }
 
             if (input.Contains("SELECT"))
             {
