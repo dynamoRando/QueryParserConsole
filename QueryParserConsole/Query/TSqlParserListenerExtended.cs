@@ -34,13 +34,48 @@ namespace QueryParserConsole
         #endregion
 
         #region Public Methods
+        public override void ExitFull_table_name([NotNull] TSqlParser.Full_table_nameContext context)
+        {
+            base.ExitFull_table_name(context);
+            string debug = context.GetText();
+            Debug.WriteLine(debug);
+        }
         public override void EnterTable_name([NotNull] TSqlParser.Table_nameContext context)
         {
             Console.WriteLine(context.GetText());
             base.EnterTable_name(context);
+
+            string debug = context.GetText();
+            Debug.WriteLine(debug);
+
             var select = GetStatementAsSelect();
             select.Tables.Add(context.GetText());
         }
+
+        public override void ExitTable_name([NotNull] TSqlParser.Table_nameContext context)
+        {
+            base.ExitTable_name(context);
+
+            string debug = context.GetText();
+            Debug.WriteLine(debug);
+        }
+
+        public override void ExitTable_name_with_hint([NotNull] TSqlParser.Table_name_with_hintContext context)
+        {
+            base.ExitTable_name_with_hint(context);
+
+            string debug = context.GetText();
+            Debug.WriteLine(debug);
+        }
+
+        public override void EnterTable_name_with_hint([NotNull] TSqlParser.Table_name_with_hintContext context)
+        {
+            base.EnterTable_name_with_hint(context);
+
+            string debug = context.GetText();
+            Debug.WriteLine(debug);
+        }
+
         public SelectStatement GetStatementAsSelect()
         {
             return _statement as SelectStatement;
