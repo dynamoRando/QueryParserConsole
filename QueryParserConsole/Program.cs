@@ -84,6 +84,9 @@ namespace QueryParserConsole
                 input = createDbStatement;
             }
 
+            Console.WriteLine("Will parse the following statement:");
+            Console.WriteLine(input);
+
             if (input.Contains("CREATE"))
             {
                 ParseDDLClause(input);

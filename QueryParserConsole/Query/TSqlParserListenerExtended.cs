@@ -117,12 +117,48 @@ namespace QueryParserConsole
         public override void EnterSearch_condition([NotNull] TSqlParser.Search_conditionContext context)
         {
             base.EnterSearch_condition(context);
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterSearch_condition:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+        }
+
+        public override void EnterSearch_condition_and([NotNull] TSqlParser.Search_condition_andContext context)
+        {
+            base.EnterSearch_condition_and(context);
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterSearch_condition_and:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
+        }
+
+        public override void EnterSearch_condition_not([NotNull] TSqlParser.Search_condition_notContext context)
+        {
+            base.EnterSearch_condition_not(context);
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterSearch_condition_not:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
 
         public override void EnterPredicate([NotNull] TSqlParser.PredicateContext context)
         {
             base.EnterPredicate(context);
-            Console.WriteLine(context.GetText());
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterPredicate:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
+
             var select = GetStatementAsSelect();
             var part = new StatementPart();
             part.StatementTableName = select.Tables.FirstOrDefault();
@@ -159,37 +195,67 @@ namespace QueryParserConsole
         // begin insert functions
         public override void EnterInsert_statement([NotNull] TSqlParser.Insert_statementContext context)
         {
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterInsert_statement:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
 
         public override void EnterFull_table_name(TSqlParser.Full_table_nameContext context)
         {
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterFull_table_name:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
 
         public override void EnterColumn_name_list(TSqlParser.Column_name_listContext context)
         {
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterColumn_name_list:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
         
         public override void EnterSimple_id(TSqlParser.Simple_idContext context)
         {
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterSimple_id:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
 
         public override void EnterInsert_statement_value(TSqlParser.Insert_statement_valueContext context)
         {
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterInsert_statement_value:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
 
         public override void EnterExpression_list(TSqlParser.Expression_listContext context)
         {
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterExpression_list:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
         }
 
         public override void EnterPrimitive_expression(TSqlParser.Primitive_expressionContext context)
         {
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterPrimitive_expression:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
         }
 
         // end insert functions
@@ -197,17 +263,31 @@ namespace QueryParserConsole
         // begin update functions
         public override void EnterUpdate_statement(TSqlParser.Update_statementContext context)
         {
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterUpdate_statement:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
 
         public override void EnterUpdate_elem(TSqlParser.Update_elemContext context)
         {
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterUpdate_elem:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
 
         public override void EnterSearch_condition_list(TSqlParser.Search_condition_listContext context)
         {
-            Console.WriteLine(context.GetText());
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterSearch_condition_list:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
         }
         // end update functions
 
@@ -227,7 +307,14 @@ namespace QueryParserConsole
         public override void EnterCreate_table([NotNull] TSqlParser.Create_tableContext context)
         {
             base.EnterCreate_table(context);
-            Console.WriteLine(context.GetText());
+
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterCreate_table:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
         }
 
         public override void EnterDml_clause([NotNull] TSqlParser.Dml_clauseContext context)
@@ -243,25 +330,47 @@ namespace QueryParserConsole
         public override void EnterData_type([NotNull] TSqlParser.Data_typeContext context)
         {
             base.EnterData_type(context);
-            Console.WriteLine(context.GetText());
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterData_type:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
         }
 
         public override void EnterColumn_definition([NotNull] TSqlParser.Column_definitionContext context)
         {
             base.EnterColumn_definition(context);
-            Console.WriteLine(context.GetText());
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterColumn_definition:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
 
         public override void EnterNull_notnull([NotNull] TSqlParser.Null_notnullContext context)
         {
             base.EnterNull_notnull(context);
-            Console.WriteLine(context.GetText());
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterNull_notnull:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
         }
 
         public override void EnterNull_or_default([NotNull] TSqlParser.Null_or_defaultContext context)
         {
             base.EnterNull_or_default(context);
-            Console.WriteLine(context.GetText());
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterNull_or_default:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
         }
 
         // end create table functions
@@ -270,13 +379,26 @@ namespace QueryParserConsole
         public override void EnterCreate_database([NotNull] TSqlParser.Create_databaseContext context)
         {
             base.EnterCreate_database(context);
-            Console.WriteLine(context.GetText());
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterCreate_database:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
+
         }
 
         public override void EnterId([NotNull] TSqlParser.IdContext context)
         {
             base.EnterId(context);
-            Console.WriteLine(context.GetText());
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterId:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
         }
         // end create database functions
         #endregion
