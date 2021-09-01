@@ -119,7 +119,43 @@ namespace QueryParserConsole
         {
             base.EnterSearch_condition(context);
 
+            bool hasAnd = false;
+            bool hasOr = false;
+
             string debug = context.GetText();
+
+            if (context.ChildCount > 1)
+            {
+                foreach(var child in context.children)
+                {
+                    var childText = child.GetText();
+                    if (string.Equals("AND", childText, StringComparison.OrdinalIgnoreCase))
+                    {
+                        hasAnd = true;
+                    }
+
+                    if (string.Equals("OR", childText, StringComparison.OrdinalIgnoreCase))
+                    {
+                        hasOr = true;
+                    }
+                }
+            }
+
+            if (context.ChildCount == 1 & context.parent != null)
+            {
+                if (context.parent.ChildCount > 1)
+                {
+                    // we can look back at the parent to determine if we had an AND/OR operator previous to this one
+                    var parentChildCount = context.parent.ChildCount;
+                    for (int i = 0; i <= parentChildCount; i++)
+                    {
+                        // one of these will be an AND/OR keyword
+                        // we can use this to determine how the predicates will operate together
+                        var parentChild = context.parent.GetChild(i);
+                    }
+
+                }
+            }
 
             Console.WriteLine("EnterSearch_condition:");
             Console.WriteLine(debug);
