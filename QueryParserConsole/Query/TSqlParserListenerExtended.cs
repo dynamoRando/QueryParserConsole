@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
+using ConsoleAntlrSQL;
 using QueryParserConsole.Query;
 using System;
 using System.Collections.Generic;
@@ -125,28 +126,6 @@ namespace QueryParserConsole
             Console.WriteLine("---");
         }
 
-        public override void EnterSearch_condition_and([NotNull] TSqlParser.Search_condition_andContext context)
-        {
-            base.EnterSearch_condition_and(context);
-
-            string debug = context.GetText();
-
-            Console.WriteLine("EnterSearch_condition_and:");
-            Console.WriteLine(debug);
-            Console.WriteLine("---");
-
-        }
-
-        public override void EnterSearch_condition_not([NotNull] TSqlParser.Search_condition_notContext context)
-        {
-            base.EnterSearch_condition_not(context);
-
-            string debug = context.GetText();
-
-            Console.WriteLine("EnterSearch_condition_not:");
-            Console.WriteLine(debug);
-            Console.WriteLine("---");
-        }
 
         public override void EnterPredicate([NotNull] TSqlParser.PredicateContext context)
         {
@@ -279,16 +258,6 @@ namespace QueryParserConsole
             Console.WriteLine("---");
         }
 
-        public override void EnterSearch_condition_list(TSqlParser.Search_condition_listContext context)
-        {
-
-            string debug = context.GetText();
-
-            Console.WriteLine("EnterSearch_condition_list:");
-            Console.WriteLine(debug);
-            Console.WriteLine("---");
-
-        }
         // end update functions
 
         // begin delete functions
@@ -389,17 +358,6 @@ namespace QueryParserConsole
 
         }
 
-        public override void EnterId([NotNull] TSqlParser.IdContext context)
-        {
-            base.EnterId(context);
-
-            string debug = context.GetText();
-
-            Console.WriteLine("EnterId:");
-            Console.WriteLine(debug);
-            Console.WriteLine("---");
-
-        }
         // end create database functions
         #endregion
 

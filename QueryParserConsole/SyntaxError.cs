@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,9 +31,10 @@ namespace QueryParserConsole
     public class SyntaxErrorListener : BaseErrorListener
     {
         public readonly List<SyntaxError> Errors = new List<SyntaxError>();
-        public override void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+
+        public override void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
         {
-            base.SyntaxError(output, recognizer, offendingSymbol, line, charPositionInLine, msg, e);
+            base.SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
             Errors.Add(new SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e));
         }
     }

@@ -6,8 +6,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.8.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <Compile Remove="tsql\old\TSqlLexer.cs" />
+    <Compile Remove="tsql\old\TSqlParser.cs" />
+    <Compile Remove="tsql\old\TSqlParserBaseListener.cs" />
+    <Compile Remove="tsql\old\TSqlParserListener.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="tsql\old\TSqlLexer.interp" />
+    <None Remove="tsql\old\TSqlLexer.tokens" />
+    <None Remove="tsql\old\TSqlParser.interp" />
+    <None Remove="tsql\old\TSqlParser.tokens" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.CodeGenerator" Version="4.6.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="tsql\old\" />
   </ItemGroup>
 
 </Project>
