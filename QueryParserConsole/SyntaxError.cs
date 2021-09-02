@@ -32,9 +32,9 @@ namespace QueryParserConsole
     {
         public readonly List<SyntaxError> Errors = new List<SyntaxError>();
 
-        public override void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
+        public override void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            base.SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
+            base.SyntaxError(output, recognizer, offendingSymbol, line, charPositionInLine, msg, e);
             Errors.Add(new SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e));
         }
     }

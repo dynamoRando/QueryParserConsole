@@ -141,17 +141,17 @@ namespace QueryParserConsole
                 }
             }
 
-            if (context.ChildCount == 1 & context.parent != null)
+            if (context.ChildCount == 1 & context.Parent != null)
             {
-                if (context.parent.ChildCount > 1)
+                if (context.Parent.ChildCount > 1)
                 {
                     // we can look back at the parent to determine if we had an AND/OR operator previous to this one
-                    var parentChildCount = context.parent.ChildCount;
+                    var parentChildCount = context.Parent.ChildCount;
                     for (int i = 0; i <= parentChildCount; i++)
                     {
                         // one of these will be an AND/OR keyword
                         // we can use this to determine how the predicates will operate together
-                        var parentChild = context.parent.GetChild(i);
+                        var parentChild = context.Parent.GetChild(i);
                     }
 
                 }
