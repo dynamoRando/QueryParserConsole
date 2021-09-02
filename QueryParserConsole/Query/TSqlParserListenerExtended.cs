@@ -142,7 +142,7 @@ namespace QueryParserConsole
                 }
             }
 
-            if (context.ChildCount == 1 & context.Parent != null && context.Parent is TSqlParser.Search_conditionContext)
+            if (context.ChildCount == 1 && context.Parent != null && context.Parent is TSqlParser.Search_conditionContext)
             {
                 // we are at the lowest level of a predicate
                 if (context.Parent.ChildCount > 1)
@@ -157,7 +157,7 @@ namespace QueryParserConsole
                         string parentChildDebug = parentChild.GetText();
 
                         // if this parentChildDebug value is the same as debug (in other words, the same as the level we're at)
-                        // it means the preceding predicates must be evaluated first
+                        // it means the preceding predicates must be evaluated first or we've got predicates at the same level we're at that should be evaluated
                         // this is kind of hard to explain
                     }
 
