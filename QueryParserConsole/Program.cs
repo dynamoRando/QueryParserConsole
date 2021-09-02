@@ -14,6 +14,7 @@ namespace QueryParserConsole
             string failure = "THE QUICK BROWN FOX";
             string defaultInput = "SELECT NAME, AGE, RANK FROM EMPLOYEE WHERE ((NAME LIKE '%RANDY%' AND RANK = 2 OR NAME = 'MEGAN') AND AGE > 32) OR (NAME = 'BRIAN')";
             string defaultInput2 = "SELECT NAME, AGE, RANK FROM EMPLOYEE WHERE NAME LIKE '%RANDY%' OR RANK = 2 ";
+            string defaultInput3 = "SELECT NAME, AGE FROM EMPLOYEE WHERE NAME = 'RANDY'";
             string inputA = "SELECT NAME FROM EMPLOYEE";
             string inputB = "SELECT NAME FROM EMPLOYEE WHERE (AGE > 20)";
             string insertStatement = "INSERT INTO EMPLOYEE (NAME, AGE, MANAGER) VALUES ('RANDY', 35, 'MEGAN')";
@@ -44,6 +45,11 @@ namespace QueryParserConsole
             if (input.Equals("default2"))
             {
                 input = defaultInput2;
+            }
+
+            if (input.Equals("default3"))
+            {
+                input = defaultInput3;
             }
 
             if (input.Equals("a"))

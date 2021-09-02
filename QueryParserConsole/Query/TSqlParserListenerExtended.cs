@@ -126,6 +126,7 @@ namespace QueryParserConsole
 
             if (context.ChildCount > 1)
             {
+                // we have multiple extra predicates
                 foreach (var child in context.children)
                 {
                     var childText = child.GetText();
@@ -141,17 +142,23 @@ namespace QueryParserConsole
                 }
             }
 
-            if (context.ChildCount == 1 & context.Parent != null)
+            if (context.ChildCount == 1 & context.Parent != null && context.Parent is TSqlParser.Search_conditionContext)
             {
+                // we are at the lowest level of a predicate
                 if (context.Parent.ChildCount > 1)
                 {
                     // we can look back at the parent to determine if we had an AND/OR operator previous to this one
                     var parentChildCount = context.Parent.ChildCount;
-                    for (int i = 0; i <= parentChildCount; i++)
+                    for (int i = 0; i < parentChildCount; i++)
                     {
                         // one of these will be an AND/OR keyword
                         // we can use this to determine how the predicates will operate together
                         var parentChild = context.Parent.GetChild(i);
+                        string parentChildDebug = parentChild.GetText();
+
+                        // if this parentChildDebug value is the same as debug (in other words, the same as the level we're at)
+                        // it means the preceding predicates must be evaluated first
+                        // this is kind of hard to explain
                     }
 
                 }
