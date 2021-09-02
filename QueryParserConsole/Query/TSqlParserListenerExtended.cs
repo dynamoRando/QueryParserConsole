@@ -126,7 +126,7 @@ namespace QueryParserConsole
 
             if (context.ChildCount > 1)
             {
-                foreach(var child in context.children)
+                foreach (var child in context.children)
                 {
                     var childText = child.GetText();
                     if (string.Equals("AND", childText, StringComparison.OrdinalIgnoreCase))
@@ -184,7 +184,7 @@ namespace QueryParserConsole
             int b = context.Stop.StopIndex;
             Interval interval = new Interval(a, b);
             _charStream = context.Start.InputStream;
-            
+
             part.TextWithWhiteSpace = _charStream.GetText(interval);
 
             var parent = context.Parent.Parent;
@@ -206,7 +206,7 @@ namespace QueryParserConsole
             part.ParseStatementPart();
             select.Statements.Add(part);
         }
- 
+
         // begin insert functions
         public override void EnterInsert_statement([NotNull] TSqlParser.Insert_statementContext context)
         {
@@ -234,7 +234,7 @@ namespace QueryParserConsole
             Console.WriteLine(debug);
             Console.WriteLine("---");
         }
-        
+
         public override void EnterSimple_id(TSqlParser.Simple_idContext context)
         {
             string debug = context.GetText();
