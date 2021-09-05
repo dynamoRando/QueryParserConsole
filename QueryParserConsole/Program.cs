@@ -2,6 +2,7 @@
 using Antlr4.Runtime.Tree;
 using ConsoleAntlrSQL;
 using Newtonsoft.Json;
+using QueryParserConsole.Drum;
 using QueryParserConsole.Query;
 using System;
 
@@ -100,6 +101,9 @@ namespace QueryParserConsole
             Console.WriteLine("Will parse the following statement:");
             Console.WriteLine(input);
 
+            ParseUsingDrummer(input);
+
+            /*
             if (input.Contains("CREATE"))
             {
                 ParseDDLClause(input);
@@ -108,8 +112,43 @@ namespace QueryParserConsole
             {
                 ParseInput(input.ToUpper());
             }
+            */
 
             Console.WriteLine("Finished. Press any key to exit.");
+            Console.ReadLine();
+        }
+
+        static void ParseUsingDrummer(string input)
+        {
+            AntlrInputStream inputStream = new AntlrInputStream(input);
+            TSqlLexer lexer = new TSqlLexer(inputStream);
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            TSqlParser parser = new TSqlParser(tokens);
+
+            var errorHandler = new SyntaxErrorListener();
+            parser.AddErrorListener(errorHandler);
+
+
+            var parseTree = parser.dml_clause();
+            ParseTreeWalker walker = new ParseTreeWalker();
+            var loader = new Drum.SQLParser();
+            loader.TokenStream = tokens;
+            walker.Walk(loader, parseTree);
+            Console.WriteLine("Parse Tree:");
+            Console.WriteLine(parseTree.ToStringTree(parser));
+
+            Console.WriteLine("Errors:");
+            foreach (var error in errorHandler.Errors)
+            {
+                Console.WriteLine(error.Message + " at position " + error.Line.ToString() + ":" + error.CharPositionInLine.ToString());
+            }
+
+            Console.Write("Press enter key to read predicate bucket");
+            Console.ReadLine();
+
+            loader.DebugBucket();
+
+            Console.Write("Press enter key to continue");
             Console.ReadLine();
         }
 
@@ -139,6 +178,7 @@ namespace QueryParserConsole
 
             Console.Write("Press enter key to continue");
             Console.ReadLine();
+
         }
 
         static void ParseInput(string input)
