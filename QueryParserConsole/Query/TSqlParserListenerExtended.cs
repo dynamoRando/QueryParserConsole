@@ -142,6 +142,11 @@ namespace QueryParserConsole
                 }
             }
 
+            if (context.ChildCount > 1 && context.Parent != null && context.Parent is TSqlParser.Query_specificationContext)
+            {
+                // we are at the root level of the search parameters, i.e, the whole WHERE clause
+            }
+
             if (context.ChildCount == 1 && context.Parent != null && context.Parent is TSqlParser.Search_conditionContext)
             {
                 // we are at the lowest level of a predicate
