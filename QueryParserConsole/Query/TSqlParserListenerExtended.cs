@@ -123,13 +123,62 @@ namespace QueryParserConsole
             bool hasOr = false;
 
             string debug = context.GetText();
+            var interval = context.SourceInterval;
+
+            Console.WriteLine("EnterSearch_condition:");
+            Console.WriteLine($"Text: {debug}");
+            Console.WriteLine($"Interval: {interval.ToString()}");
+
+            // if the predicate is not null
+            // we can try to examine the parent's children for an AND/OR keyword
+            var predicate = context.predicate();
+
+            if (predicate != null)
+            {
+                var predicateText = predicate.GetText();
+                Console.WriteLine($"EnterSearch_condition - predicate: {predicateText}");
+                if (context.Parent.ChildCount > 0)
+                {
+                    var contextParent = context.Parent as TSqlParser.Search_conditionContext;
+                    foreach (var a in contextParent.children)
+                    {
+                        // one of these will be the current predicate
+                        // the other will be the boolean operator
+                        // and the final will be the other operator you need to combine
+                        var aText = a.GetText();
+
+                        Console.WriteLine($"EnterSearch_condition - predicate parent: {aText}");
+
+                        if (aText == "AND" || aText == "OR")
+                        {
+                            Debug.Write("Have a boolean");
+                        }
+                    }
+
+                    if (context.Parent.Parent is TSqlParser.Search_conditionContext)
+                    {
+                        var contextGrandParent = context.Parent.Parent as TSqlParser.Search_conditionContext;
+                        foreach(var b in contextGrandParent.children)
+                        {
+                            var bText = b.GetText();
+                            Console.WriteLine($"EnterSearch_condition - predicate grand parent: {bText}");
+                        }
+                    }
+                }
+            }
 
             if (context.ChildCount > 1)
             {
                 // we have multiple extra predicates
                 foreach (var child in context.children)
                 {
+                    Console.WriteLine("EnterSearch_condition - child");
                     var childText = child.GetText();
+                    var childInterval = child.SourceInterval;
+
+                    Console.WriteLine($"Child Text: {childText}");
+                    Console.WriteLine($"Child Interval: {childInterval.ToString()}");
+
                     if (string.Equals("AND", childText, StringComparison.OrdinalIgnoreCase))
                     {
                         hasAnd = true;
@@ -145,6 +194,7 @@ namespace QueryParserConsole
             if (context.ChildCount > 1 && context.Parent != null && context.Parent is TSqlParser.Query_specificationContext)
             {
                 // we are at the root level of the search parameters, i.e, the whole WHERE clause
+                Debug.WriteLine("At root of where clause");
             }
 
             if (context.ChildCount == 1 && context.Parent != null && context.Parent is TSqlParser.Search_conditionContext)
@@ -169,8 +219,6 @@ namespace QueryParserConsole
                 }
             }
 
-            Console.WriteLine("EnterSearch_condition:");
-            Console.WriteLine(debug);
             Console.WriteLine("---");
         }
 
@@ -180,6 +228,7 @@ namespace QueryParserConsole
             base.EnterPredicate(context);
 
             string debug = context.GetText();
+            var sourceInterval = context.SourceInterval;
 
             Console.WriteLine("EnterPredicate:");
             Console.WriteLine(debug);
