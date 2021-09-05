@@ -137,6 +137,9 @@ namespace QueryParserConsole
             {
                 var predicateText = predicate.GetText();
                 Console.WriteLine($"EnterSearch_condition - predicate: {predicateText}");
+                var predicateInterval = predicate.SourceInterval;
+                Console.WriteLine($"EnterSearch_condition - predicate interval: {predicateInterval}");
+
                 if (context.Parent.ChildCount > 0)
                 {
                     var contextParent = context.Parent as TSqlParser.Search_conditionContext;
@@ -148,6 +151,8 @@ namespace QueryParserConsole
                         var aText = a.GetText();
 
                         Console.WriteLine($"EnterSearch_condition - predicate parent: {aText}");
+                        var childInterval = a.SourceInterval;
+                        Console.WriteLine($"EnterSearch_condition - predicate parent interval: {childInterval}");
 
                         if (aText == "AND" || aText == "OR")
                         {
@@ -158,10 +163,75 @@ namespace QueryParserConsole
                     if (context.Parent.Parent is TSqlParser.Search_conditionContext)
                     {
                         var contextGrandParent = context.Parent.Parent as TSqlParser.Search_conditionContext;
-                        foreach(var b in contextGrandParent.children)
+                        foreach (var b in contextGrandParent.children)
                         {
                             var bText = b.GetText();
                             Console.WriteLine($"EnterSearch_condition - predicate grand parent: {bText}");
+
+                            if (b is TSqlParser.Search_conditionContext)
+                            {
+                                var contextGreatGrandParent = b as TSqlParser.Search_conditionContext;
+                                var contextGreatGrandParentPredicate = contextGreatGrandParent.predicate();
+
+                                if (contextGreatGrandParentPredicate != null)
+                                {
+                                    var greatGrandParentText = contextGreatGrandParentPredicate.GetText();
+                                    Console.WriteLine($"EnterSearch_condition - predicate great grandparent predicate: {greatGrandParentText}");
+                                    var greatGrandParentInterval = contextGreatGrandParentPredicate.SourceInterval;
+                                    Console.WriteLine($"EnterSearch_condition - predicate great grandparent predicate interval: {greatGrandParentInterval}");
+
+                                }
+
+                                if (contextGreatGrandParent.ChildCount > 0)
+                                {
+                                    foreach (var c in contextGrandParent.children)
+                                    {
+                                        if (c is TSqlParser.Search_conditionContext)
+                                        {
+                                            var greatGreatContext = c as TSqlParser.Search_conditionContext;
+
+                                            var cText = greatGreatContext.GetText();
+                                            Console.WriteLine($"EnterSearch_condition - predicate great 2x children: {cText}");
+                                            var cInterval = greatGreatContext.SourceInterval;
+                                            Console.WriteLine($"EnterSearch_condition - predicate great 2x interval: {cInterval}");
+
+                                            var greatPredicate = greatGreatContext.predicate();
+                                            if (greatPredicate != null)
+                                            {
+                                                var greatText = greatPredicate.GetText();
+                                                Console.WriteLine($"EnterSearch_condition - predicate great grandparent children predicate: {greatText}");
+                                                var greatInterval = greatPredicate.SourceInterval;
+                                                Console.WriteLine($"EnterSearch_condition - predicate great grandparent children predicate interval: {greatInterval}");
+                                            }
+
+                                            if (greatGreatContext.ChildCount > 0)
+                                            {
+                                                foreach (var d in greatGreatContext.children)
+                                                {
+                                                    var dText = d.GetText();
+                                                    Console.WriteLine($"D text: {dText}");
+                                                    var dInterval = d.SourceInterval;
+                                                    Console.WriteLine($"D Interval: {dInterval}");
+
+                                                    if (d is TSqlParser.Search_conditionContext)
+                                                    {
+                                                        var dSearch = d as TSqlParser.Search_conditionContext;
+                                                        var dPredicate = dSearch.predicate();
+                                                        if (dPredicate != null)
+                                                        {
+                                                            var dPredicateText = dPredicate.GetText();
+                                                            Console.WriteLine($"D Predicate Text: {dPredicateText}");
+                                                            var dPredicateInterval = dPredicate.SourceInterval;
+                                                            Console.WriteLine($"D Predicate Interval: {dPredicateInterval}");
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
