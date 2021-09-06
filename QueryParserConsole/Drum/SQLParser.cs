@@ -74,8 +74,16 @@ namespace QueryParserConsole.Drum
 
         public void DebugBucket()
         {
-            _bucket.Predicates.OrderByDescending(p => p.Id);
+            // _bucket.Predicates = _bucket.Predicates.OrderByDescending(p => p.Id).ToList();
+            var maxPredicateId = _bucket.Predicates.Max(p => p.Id);
+            var maxPredicate = _bucket.Predicates.Where(p => p.Id == maxPredicateId).FirstOrDefault();
 
+            if (maxPredicate is BoolPredicate)
+            {
+                DebugBoolPredicate(maxPredicate as BoolPredicate); ;
+            }
+
+            /*
             foreach (var predicate in _bucket.Predicates)
             {
                 if (predicate is BoolPredicate)
@@ -89,6 +97,7 @@ namespace QueryParserConsole.Drum
                     DebugPredicate(regularPredicate);
                 }
             }
+            */
         }
 
         #endregion
@@ -511,15 +520,20 @@ namespace QueryParserConsole.Drum
         private void DebugBoolPredicate(BoolPredicate predicate)
         {
             Console.WriteLine($"Bool Predicate Id: {predicate.Id.ToString()}");
-            Console.WriteLine($"Bool Interval: {predicate.Interval.A.ToString()}:{predicate.Interval.B.ToString()}");
+            //Console.WriteLine($"Bool Interval: {predicate.Interval.A.ToString()}:{predicate.Interval.B.ToString()}");
             Console.WriteLine($"Bool Operator: {predicate.Boolean}");
 
             if (predicate.Left is not null)
             {
                 if (predicate.Left is BoolPredicate)
                 {
-                    Console.WriteLine($"Bool Predicate Id: {predicate.Id.ToString()} Left Is Bool, evaluating...");
+                    //Console.WriteLine($"Bool Predicate Id: {predicate.Id.ToString()} Left Is Bool, evaluating...");
                     DebugBoolPredicate(predicate.Left as BoolPredicate);
+                }
+                else if (predicate.Left is Predicate && predicate.Right is Predicate)
+                {
+                    DebugPredicate(predicate.Left as Predicate);
+                    DebugPredicate(predicate.Right as Predicate);
                 }
                 else
                 {
@@ -531,7 +545,7 @@ namespace QueryParserConsole.Drum
             {
                 if (predicate.Right is BoolPredicate)
                 {
-                    Console.WriteLine($"Bool Predicate Id: {predicate.Id.ToString()} Right Is Bool, evaluating...");
+                    //Console.WriteLine($"Bool Predicate Id: {predicate.Id.ToString()} Right Is Bool, evaluating...");
                     DebugBoolPredicate(predicate.Right as BoolPredicate);
                 }
                 else
@@ -545,7 +559,7 @@ namespace QueryParserConsole.Drum
         private void DebugPredicate(Predicate predicate)
         {
             Console.WriteLine($"Predicate Id: {predicate.Id.ToString()}");
-            Console.WriteLine($"Predicate Interval: {predicate.Interval.A.ToString()}:{predicate.Interval.B.ToString()}");
+            //Console.WriteLine($"Predicate Interval: {predicate.Interval.A.ToString()}:{predicate.Interval.B.ToString()}");
             Console.WriteLine($"Predicate Text: {predicate.Text}");
         }
 
