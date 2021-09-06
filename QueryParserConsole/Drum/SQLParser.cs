@@ -268,6 +268,21 @@ namespace QueryParserConsole.Drum
                     // do something with the predicate
                     drumPredicate = GetDrumPredicate(searchPredicate);
                 }
+                else
+                {
+                    foreach (var c in searchContext.children)
+                    {
+                        if (c is TSqlParser.Search_conditionContext)
+                        {
+                            var x = c as TSqlParser.Search_conditionContext;
+                            var p = x.predicate();
+                            if (p is not null)
+                            {
+                                drumPredicate = GetDrumPredicate(p);
+                            }
+                        }
+                    }
+                }
             }
 
             if (context.Parent.ChildCount > 0)
@@ -306,13 +321,28 @@ namespace QueryParserConsole.Drum
                                         var childInterval = child.SourceInterval;
                                         var dChildInterval = new Interval { A = childInterval.a, B = childInterval.b };
 
-
-                                        // account for parenthesis
-                                        if (text.StartsWith("(") && text.EndsWith(")"))
+                                        var textCharacters = text.ToCharArray();
+                                        foreach (var ch in textCharacters)
                                         {
-                                            dChildInterval.A += 1;
+                                            if (ch == Char.Parse("("))
+                                            {
+                                                dChildInterval.A += 1;
+                                            }
+
+                                            /*
+                                            if (ch == Char.Parse(")"))
+                                            {
+                                                dChildInterval.B -= 1;
+                                            }
+                                            */
+                                        }
+
+                                        if (text.EndsWith(")"))
+                                        {
                                             dChildInterval.B -= 1;
                                         }
+
+                                        var foo = dChildInterval;
 
                                         if (HasPredicate(dChildInterval))
                                         {
@@ -320,11 +350,18 @@ namespace QueryParserConsole.Drum
                                             var existingBoolean = GetBooleanPredicate(dChildInterval);
                                             if (existingBoolean is not null)
                                             {
-                                                var booleanPredicate = new BoolPredicate(GetNextPredicateId());
-                                                booleanPredicate.Boolean = boolText;
-                                                booleanPredicate.Left = existingBoolean;
-                                                booleanPredicate.Right = drumPredicate;
-                                                AddPredicate(booleanPredicate);
+                                                if (drumPredicate is not null)
+                                                {
+                                                    var booleanPredicate = new BoolPredicate(GetNextPredicateId());
+                                                    booleanPredicate.Boolean = boolText;
+                                                    booleanPredicate.Left = existingBoolean;
+                                                    booleanPredicate.Right = drumPredicate;
+                                                    AddPredicate(booleanPredicate);
+                                                    return;
+                                                }
+                                            }
+                                            else
+                                            {
                                                 return;
                                             }
                                         }
@@ -332,18 +369,24 @@ namespace QueryParserConsole.Drum
 
                                     // we need to check to see if there is already a boolean in the bucket
                                     // for this predicate
-                                    if (HasBooleanPredicate(drumPredicate))
+
+                                    if (drumPredicate is not null)
                                     {
-                                        var existingBoolean = GetBooleanPredicate(drumPredicate);
-                                        existingBoolean.Right = dPredicate;
+                                        if (HasBooleanPredicate(drumPredicate))
+                                        {
+                                            var existingBoolean = GetBooleanPredicate(drumPredicate);
+                                            existingBoolean.Right = dPredicate;
+                                        }
+                                        else
+                                        {
+                                            var booleanPredicate = new BoolPredicate(GetNextPredicateId());
+                                            booleanPredicate.Boolean = boolText;
+                                            booleanPredicate.Left = drumPredicate;
+                                            AddPredicate(booleanPredicate);
+                                        }
                                     }
-                                    else
-                                    {
-                                        var booleanPredicate = new BoolPredicate(GetNextPredicateId());
-                                        booleanPredicate.Boolean = boolText;
-                                        booleanPredicate.Left = drumPredicate;
-                                        AddPredicate(booleanPredicate);
-                                    }
+
+
                                 }
                             }
 
@@ -378,8 +421,8 @@ namespace QueryParserConsole.Drum
 
                                     if (grandParent is TSqlParser.Search_conditionContext)
                                     {
-                                        var gp = grandParent as TSqlParser.Search_conditionContext; 
-                                        foreach(var grandChild in gp.children)
+                                        var gp = grandParent as TSqlParser.Search_conditionContext;
+                                        foreach (var grandChild in gp.children)
                                         {
                                             if (grandChild is TSqlParser.Search_conditionContext)
                                             {
