@@ -80,7 +80,7 @@ namespace QueryParserConsole.Drum
 
             if (maxPredicate is BoolPredicate)
             {
-                DebugBoolPredicate(maxPredicate as BoolPredicate); ;
+                DebugBoolPredicate(maxPredicate as BoolPredicate);
             }
 
             /*
@@ -519,9 +519,9 @@ namespace QueryParserConsole.Drum
 
         private void DebugBoolPredicate(BoolPredicate predicate)
         {
-            Console.WriteLine($"Bool Predicate Id: {predicate.Id.ToString()}");
+            //Console.WriteLine($"Bool Predicate Id: {predicate.Id.ToString()}");
             //Console.WriteLine($"Bool Interval: {predicate.Interval.A.ToString()}:{predicate.Interval.B.ToString()}");
-            Console.WriteLine($"Bool Operator: {predicate.Boolean}");
+            //Console.WriteLine($"Bool Operator: {predicate.Boolean}");
 
             if (predicate.Left is not null)
             {
@@ -533,6 +533,7 @@ namespace QueryParserConsole.Drum
                 else if (predicate.Left is Predicate && predicate.Right is Predicate)
                 {
                     DebugPredicate(predicate.Left as Predicate);
+                    Console.WriteLine($"Bool Operator: {predicate.Boolean}");
                     DebugPredicate(predicate.Right as Predicate);
                 }
                 else
@@ -550,6 +551,7 @@ namespace QueryParserConsole.Drum
                 }
                 else
                 {
+                    Console.WriteLine($"Bool Operator: {predicate.Boolean}");
                     DebugPredicate(predicate.Right as Predicate);
                 }
             }
