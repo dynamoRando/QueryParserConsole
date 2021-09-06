@@ -26,6 +26,7 @@ namespace QueryParserConsole
         }
         public TSqlParserListenerExtended(SelectStatement statement)
         {
+
             _statement = statement;
         }
         #endregion
@@ -136,6 +137,9 @@ namespace QueryParserConsole
             if (predicate != null)
             {
                 var predicateText = predicate.GetText();
+                var andNode = predicate.AND;
+                var predicateExpression = predicate.expression();
+
                 Console.WriteLine($"EnterSearch_condition - predicate: {predicateText}");
                 var predicateInterval = predicate.SourceInterval;
                 Console.WriteLine($"EnterSearch_condition - predicate interval: {predicateInterval}");

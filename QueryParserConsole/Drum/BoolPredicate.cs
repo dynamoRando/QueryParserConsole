@@ -13,7 +13,8 @@ namespace QueryParserConsole.Drum
         public Interval Interval => GetInterval();
         public IPredicate Left { get; set; }
         public IPredicate Right { get; set; }
-        public int Id => _id;   
+        public int Id => _id;
+        public string Boolean { get; set; }
 
         public BoolPredicate(int id)
         {
