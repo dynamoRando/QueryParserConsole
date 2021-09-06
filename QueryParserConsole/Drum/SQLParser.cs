@@ -74,6 +74,8 @@ namespace QueryParserConsole.Drum
 
         public void DebugBucket()
         {
+            _bucket.Predicates.OrderByDescending(p => p.Id);
+
             foreach (var predicate in _bucket.Predicates)
             {
                 if (predicate is BoolPredicate)
@@ -510,6 +512,7 @@ namespace QueryParserConsole.Drum
         {
             Console.WriteLine($"Bool Predicate Id: {predicate.Id.ToString()}");
             Console.WriteLine($"Bool Interval: {predicate.Interval.A.ToString()}:{predicate.Interval.B.ToString()}");
+            Console.WriteLine($"Bool Operator: {predicate.Boolean}");
 
             if (predicate.Left is not null)
             {
