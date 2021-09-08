@@ -101,9 +101,9 @@ namespace QueryParserConsole
             Console.WriteLine("Will parse the following statement:");
             Console.WriteLine(input);
 
-            ParseUsingDrummer(input);
+            //ParseUsingDrummer(input);
 
-            /*
+            
             if (input.Contains("CREATE"))
             {
                 ParseDDLClause(input);
@@ -112,7 +112,7 @@ namespace QueryParserConsole
             {
                 ParseInput(input.ToUpper());
             }
-            */
+            
 
             Console.WriteLine("Finished. Press any key to exit.");
             Console.ReadLine();

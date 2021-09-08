@@ -521,11 +521,25 @@ namespace QueryParserConsole
             base.EnterCreate_database(context);
 
             string debug = context.GetText();
+            string debug2 = GetWhiteSpaceFromCurrentContext(context);
 
             Console.WriteLine("EnterCreate_database:");
             Console.WriteLine(debug);
             Console.WriteLine("---");
 
+
+        }
+
+        public override void EnterId_([NotNull] TSqlParser.Id_Context context)
+        {
+            base.EnterId_(context);
+
+            string debug = context.GetText();
+            string debug2 = GetWhiteSpaceFromCurrentContext(context);
+
+            Console.WriteLine("EnterId_:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
 
         }
 
@@ -546,6 +560,15 @@ namespace QueryParserConsole
             {
                 return string.Empty;
             }
+        }
+
+        private string GetWhiteSpaceFromCurrentContext(ParserRuleContext context)
+        {
+            int a = context.Start.StartIndex;
+            int b = context.Stop.StopIndex;
+            Interval interval = new Interval(a, b);
+            _charStream = context.Start.InputStream;
+            return _charStream.GetText(interval);
         }
         #endregion
     }
