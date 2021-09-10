@@ -472,6 +472,7 @@ namespace QueryParserConsole
             base.EnterData_type(context);
 
             string debug = context.GetText();
+            string fullText = GetWhiteSpaceFromCurrentContext(context);
 
             Console.WriteLine("EnterData_type:");
             Console.WriteLine(debug);
