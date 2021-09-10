@@ -23,6 +23,7 @@ namespace QueryParserConsole
             string updateStatement = "UPDATE EMPLOYEE SET NAME = 'RANDY LE', AGE = 36 WHERE NAME = 'RANDY' AND AGE = 35";
             string deleteStatement = "DELETE FROM EMPLOYEE WHERE NAME = 'JIM'";
             string createDbStatement = "CREATE DATABASE BIN1";
+            string dropDbStatement = "DROP DATABASE FOOBAR";
 
             string createTable = @"
             CREATE TABLE EMPLOYEE
@@ -98,13 +99,18 @@ namespace QueryParserConsole
                 input = createDbStatement;
             }
 
+            if (input.Equals("ddb"))
+            {
+                input = dropDbStatement;
+            }
+
             Console.WriteLine("Will parse the following statement:");
             Console.WriteLine(input);
 
             //ParseUsingDrummer(input);
 
             
-            if (input.Contains("CREATE"))
+            if (input.Contains("CREATE") || input.Contains("DROP"))
             {
                 ParseDDLClause(input);
             }
@@ -113,7 +119,6 @@ namespace QueryParserConsole
                 ParseInput(input.ToUpper());
             }
             
-
             Console.WriteLine("Finished. Press any key to exit.");
             Console.ReadLine();
         }

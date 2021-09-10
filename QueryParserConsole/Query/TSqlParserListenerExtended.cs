@@ -513,6 +513,18 @@ namespace QueryParserConsole
 
         }
 
+        public override void EnterDrop_database([NotNull] TSqlParser.Drop_databaseContext context)
+        {
+            base.EnterDrop_database(context);
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterDrop_database:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
+        }
+
         // end create table functions
 
         // begin create database functions
