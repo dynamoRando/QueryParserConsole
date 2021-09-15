@@ -398,6 +398,17 @@ namespace QueryParserConsole
 
         }
 
+        public override void EnterExpression([NotNull] TSqlParser.ExpressionContext context)
+        {
+            base.EnterExpression(context);
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterExpression:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+        }
+
         public override void EnterPrimitive_expression(TSqlParser.Primitive_expressionContext context)
         {
             string debug = context.GetText();
@@ -478,6 +489,48 @@ namespace QueryParserConsole
             Console.WriteLine(debug);
             Console.WriteLine("---");
 
+        }
+
+        public override void EnterSTRINGAGG([NotNull] TSqlParser.STRINGAGGContext context)
+        {
+            base.EnterSTRINGAGG(context);
+        }
+
+        public override void EnterKeyword([NotNull] TSqlParser.KeywordContext context)
+        {
+            base.EnterKeyword(context);
+
+            string debug = context.GetText();
+            string fullText = GetWhiteSpaceFromCurrentContext(context);
+
+            Console.WriteLine("EnterKeyword:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+
+        }
+
+        public override void EnterConstant([NotNull] TSqlParser.ConstantContext context)
+        {
+            base.EnterConstant(context);
+
+            string debug = context.GetText();
+            string fullText = GetWhiteSpaceFromCurrentContext(context);
+
+            Console.WriteLine("EnterConstant:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+        }
+
+        public override void EnterConstant_expression([NotNull] TSqlParser.Constant_expressionContext context)
+        {
+            base.EnterConstant_expression(context);
+
+            string debug = context.GetText();
+            string fullText = GetWhiteSpaceFromCurrentContext(context);
+
+            Console.WriteLine("EnterConstant_expression:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
         }
 
         public override void EnterColumn_definition([NotNull] TSqlParser.Column_definitionContext context)
