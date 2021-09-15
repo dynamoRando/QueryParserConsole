@@ -352,6 +352,17 @@ namespace QueryParserConsole
             Console.WriteLine("---");
         }
 
+        public override void EnterInsert_column_id([NotNull] TSqlParser.Insert_column_idContext context)
+        {
+            base.EnterInsert_column_id(context);
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterInsert_column_id:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+        }
+
         public override void EnterFull_table_name(TSqlParser.Full_table_nameContext context)
         {
             string debug = context.GetText();
