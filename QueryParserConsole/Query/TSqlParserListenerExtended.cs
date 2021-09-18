@@ -108,6 +108,7 @@ namespace QueryParserConsole
         {
             return _statement as SelectStatement;
         }
+
         public override void ExitSearch_condition([NotNull] TSqlParser.Search_conditionContext context)
         {
             base.ExitSearch_condition(context);
