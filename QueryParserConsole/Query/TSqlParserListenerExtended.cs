@@ -138,6 +138,10 @@ namespace QueryParserConsole
         public override void EnterSelect_list_elem([NotNull] TSqlParser.Select_list_elemContext context)
         {
             base.EnterSelect_list_elem(context);
+
+            string debug = context.GetText();
+            string fullText = GetWhiteSpaceFromCurrentContext(context);
+
             var select = GetStatementAsSelect();
             select.SelectList.Add(context.GetText());
         }
