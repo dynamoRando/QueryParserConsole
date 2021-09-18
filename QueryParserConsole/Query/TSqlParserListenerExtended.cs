@@ -42,6 +42,18 @@ namespace QueryParserConsole
             string debug = context.GetText();
             Debug.WriteLine(debug);
         }
+
+        public override void EnterFull_column_name([NotNull] TSqlParser.Full_column_nameContext context)
+        {
+            base.EnterFull_column_name(context);
+
+            string debug = context.GetText();
+            Debug.WriteLine(debug);
+
+            string fullText = GetWhiteSpaceFromCurrentContext(context);
+            Debug.WriteLine(fullText);
+        }
+
         public override void EnterTable_name([NotNull] TSqlParser.Table_nameContext context)
         {
             Console.WriteLine(context.GetText());
@@ -50,8 +62,22 @@ namespace QueryParserConsole
             string debug = context.GetText();
             Debug.WriteLine(debug);
 
+            string fullText = GetWhiteSpaceFromCurrentContext(context);
+            Debug.WriteLine(fullText);
+
             var select = GetStatementAsSelect();
             select.Tables.Add(context.GetText());
+        }
+
+        public override void EnterTable_alias([NotNull] TSqlParser.Table_aliasContext context)
+        {
+            base.EnterTable_alias(context);
+
+            string debug = context.GetText();
+            Debug.WriteLine(debug);
+
+            string fullText = GetWhiteSpaceFromCurrentContext(context);
+            Debug.WriteLine(fullText);
         }
 
         public override void ExitTable_name([NotNull] TSqlParser.Table_nameContext context)

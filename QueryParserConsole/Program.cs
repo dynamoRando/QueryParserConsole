@@ -24,6 +24,7 @@ namespace QueryParserConsole
             string deleteStatement = "DELETE FROM EMPLOYEE WHERE NAME = 'JIM'";
             string createDbStatement = "CREATE DATABASE BIN1";
             string dropDbStatement = "DROP DATABASE FOOBAR";
+            string selectDatabases = "SELECT DB.COL1, DB.COL2 FROM SYS.DATABASES DB";
 
             string createTable = @"
             CREATE TABLE EMPLOYEE
@@ -38,6 +39,11 @@ namespace QueryParserConsole
             Console.WriteLine("QueryParserConsole. Used to test how Antlr will parse queries.");
             Console.WriteLine("Enter a query to parse or (d) for default.");
             var input = Console.ReadLine();
+
+            if (input.Equals("sd"))
+            {
+                input = selectDatabases;
+            }
 
             if (input.Equals("default"))
             {
