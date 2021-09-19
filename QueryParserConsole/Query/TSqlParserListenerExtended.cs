@@ -178,6 +178,12 @@ namespace QueryParserConsole
                 if (context.Parent.ChildCount > 0)
                 {
                     var contextParent = context.Parent as TSqlParser.Search_conditionContext;
+
+                    if (contextParent is null)
+                    {
+                        return;
+                    }
+
                     foreach (var a in contextParent.children)
                     {
                         // one of these will be the current predicate
