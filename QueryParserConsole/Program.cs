@@ -25,6 +25,8 @@ namespace QueryParserConsole
             string createDbStatement = "CREATE DATABASE BIN1";
             string dropDbStatement = "DROP DATABASE FOOBAR";
             string selectDatabases = "SELECT DB.COL1, DB.COL2 FROM SYS.DATABASES DB";
+            string selectEverything = "SELECT * FROM TABLEONE";
+            string createSchema = "CREATE SCHEMA TEST";
 
             string createTable = @"
             CREATE TABLE EMPLOYEE
@@ -39,6 +41,16 @@ namespace QueryParserConsole
             Console.WriteLine("QueryParserConsole. Used to test how Antlr will parse queries.");
             Console.WriteLine("Enter a query to parse or (d) for default.");
             var input = Console.ReadLine();
+
+            if (input.Equals("cs"))
+            {
+                input = createSchema;
+            }
+
+            if (input.Equals("se"))
+            {
+                input = selectEverything;
+            }
 
             if (input.Equals("sd"))
             {
