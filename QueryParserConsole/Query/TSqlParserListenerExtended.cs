@@ -467,6 +467,17 @@ namespace QueryParserConsole
 
         }
 
+        public override void EnterDrop_table([NotNull] TSqlParser.Drop_tableContext context)
+        {
+            base.EnterDrop_table(context);
+
+            string debug = context.GetText();
+
+            Console.WriteLine("EnterDrop_table:");
+            Console.WriteLine(debug);
+            Console.WriteLine("---");
+        }
+
         // end insert functions
 
         // begin update functions

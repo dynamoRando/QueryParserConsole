@@ -27,6 +27,7 @@ namespace QueryParserConsole
             string selectDatabases = "SELECT DB.COL1, DB.COL2 FROM SYS.DATABASES DB";
             string selectEverything = "SELECT * FROM TABLEONE";
             string createSchema = "CREATE SCHEMA TEST";
+            string dropTableIfExists = "DROP TABLE IF EXISTS FOO.BAR";
 
             string createTable = @"
             CREATE TABLE EMPLOYEE
@@ -122,12 +123,16 @@ namespace QueryParserConsole
                 input = dropDbStatement;
             }
 
+            if (input.Equals("dtie"))
+            {
+                input = dropTableIfExists;
+            }
+
             Console.WriteLine("Will parse the following statement:");
             Console.WriteLine(input);
 
             //ParseUsingDrummer(input);
 
-            
             if (input.Contains("CREATE") || input.Contains("DROP"))
             {
                 ParseDDLClause(input);
